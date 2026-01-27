@@ -12,7 +12,7 @@ Cognote is a **lightweight** note-taking application that has all the features o
 and allows users to annotate notes **inline** with markers to:
 
 <details style="margin-bottom: 1rem;">
-    <summary> create hidden sections in their notes that are revealed</summary>
+    <summary> (click me) create hidden sections in their notes that are revealed</summary>
     <em>on demand</em>. 
 </details>
 
