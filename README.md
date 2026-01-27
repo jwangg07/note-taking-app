@@ -17,3 +17,10 @@ and allows users to annotate notes **inline** with markers to:
 </details>
 
 Think flashcards, but right there *in your notes*. This application is designed for students to aid them in their studying. As a student myself, this app will help me optimize my time by keeping my study tools all in one place.
+
+## User Stories
+- As a user, I want to be able to add a document to my collection of notes
+- As a user, I want to be able to view a list of documents in my collection
+- As a user, I want to select a document in my collection to view and edit it
+- As a user, I want to remove a document from my collection
+- As a user, I want to hide the contents of an answer to a question in a document
