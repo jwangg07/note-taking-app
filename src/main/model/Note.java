@@ -3,24 +3,28 @@ package model;
 // Represents and operates a Note 
 public class Note {
 
+    private String title;
+    private String content;
+
     // EFFECTS: Creates an empty note with given title and no content
     public Note(String title) {
-        // stub
+        this.title = title;
+        content = "";
     }
 
     public String getTitle() {
-        return ""; // stub
+        return title;
     }
 
     public void setTitle(String title) {
-        // stub
+        this.title = title;
     }
 
     public String getContent() {
-        return ""; // stub
+        return content;
     }
 
     public void setContent(String content) {
-        // stub
+        this.content = content;
     }
 }
