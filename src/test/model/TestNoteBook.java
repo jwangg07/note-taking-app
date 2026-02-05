@@ -77,10 +77,16 @@ public class TestNoteBook {
     }
 
     @Test
-    void getNote() {
+    void getNoteFound() {
         assertNull(notebook.getNote("note1"));
         notebook.addNote(note1);
         assertEquals(note1, notebook.getNote("note1"));
+    }
+
+        @Test
+    void getNoteNotFound() {
+        notebook.addNote(note1);
+        assertNull(notebook.getNote("note2"));
     }
 
     @Test void getAllNotes() {
