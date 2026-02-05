@@ -1,6 +1,6 @@
 package model;
 
-
+// Represents and operates a Note 
 public class Note {
 
     // EFFECTS: Creates an empty note with given title and no content
@@ -9,7 +9,7 @@ public class Note {
     }
 
     public String getTitle() {
-        return null; // stub
+        return ""; // stub
     }
 
     public void setTitle(String title) {
@@ -17,7 +17,7 @@ public class Note {
     }
 
     public String getContent() {
-        return null; // stub
+        return ""; // stub
     }
 
     public void setContent(String content) {
