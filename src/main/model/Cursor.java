@@ -7,6 +7,11 @@ public class Cursor {
         // stub
     }
 
+    // EFFECTS: Creates a cursor at given row and column (FOR TEST PURPOSES)
+    public Cursor(int row, int col) {
+        // stub
+    }
+
     // MODIFIES: this
     // EFFECTS: moves the cursor up a row
     public void moveUp() {
@@ -31,11 +36,13 @@ public class Cursor {
 
     }
 
-    public int getCursorRow() {
+    public int getRow() {
         return 0; // stub
     }
 
-    public int getCursorColumn() {
+    public int getColumn() {
         return 0; // stub
     }
+
+    // TODO: set a char limit, moving right at char limit goes to next row
 }
