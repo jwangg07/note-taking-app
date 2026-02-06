@@ -1,15 +1,24 @@
 package ui;
 
+import java.util.Scanner;
+
 public class InputHandler {
+
+    private Scanner scanner;
+
+    public InputHandler() {
+        scanner = new Scanner(System.in);
+    }
 
     // EFFECTS: asks user for input with a message and returns user input
     public String promptInput(String message) {
-        return ""; // stub
+        System.out.println(message);
+        return getUserInput();
     }
 
     // EFFECTS: returns user input
     private String getUserInput() {
-        return ""; // stub
+        return scanner.nextLine();
     }
 
 }
