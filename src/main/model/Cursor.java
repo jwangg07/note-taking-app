@@ -7,8 +7,8 @@ public class Cursor {
 
     // EFFECTS: Creates a cursor at row 1 and column 1
     public Cursor() {
-        row = 1;
-        col = 1;
+        row = 0;
+        col = 0;
     }
 
     // REQUIRES: row > 1, col > 1
@@ -21,7 +21,7 @@ public class Cursor {
     // MODIFIES: this
     // EFFECTS: moves the cursor up a row, if not already on the top row
     public void moveUp() {
-        if (row > 1) row--;
+        if (row > 0) row--;
     }
 
     // MODIFIES: this
@@ -39,7 +39,7 @@ public class Cursor {
     // MODIFIES: this
     // EFFECTS: moves the cursor to a column to the left, if not already at the left most column
     public void moveLeft() {
-        if (col > 1) col--;
+        if (col > 0) col--;
     }
 
     public int getRow() {

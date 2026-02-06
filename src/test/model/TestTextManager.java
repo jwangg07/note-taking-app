@@ -18,16 +18,16 @@ public class TestTextManager {
     void testConstructor() {
         assertEquals(1, text.getLines().size());
         assertEquals("", text.getLines().get(0));
-        assertEquals(1, text.getCursor().getRow());
-        assertEquals(1, text.getCursor().getColumn());
+        assertEquals(0, text.getCursor().getRow());
+        assertEquals(0, text.getCursor().getColumn());
     }
 
     @Test
     void testInsertCharOnce() {
         text.insertChar('a');
         assertEquals("a", text.getLines().get(0));
-        assertEquals(1, text.getCursor().getRow());
-        assertEquals(2, text.getCursor().getColumn());
+        assertEquals(0, text.getCursor().getRow());
+        assertEquals(1, text.getCursor().getColumn());
     }
 
     @Test
@@ -35,8 +35,8 @@ public class TestTextManager {
         text.insertChar('a');
         text.insertChar('b');
         assertEquals("ab", text.getLines().get(0));
-        assertEquals(1, text.getCursor().getRow());
-        assertEquals(3, text.getCursor().getColumn());
+        assertEquals(0, text.getCursor().getRow());
+        assertEquals(2, text.getCursor().getColumn());
     }
 
     @Test
@@ -46,8 +46,8 @@ public class TestTextManager {
         text.getCursor().moveLeft();
         text.insertChar('c');
         assertEquals("acb", text.getLines().get(0));
-        assertEquals(1, text.getCursor().getRow());
-        assertEquals(3, text.getCursor().getColumn());
+        assertEquals(0, text.getCursor().getRow());
+        assertEquals(2, text.getCursor().getColumn());
     }
 
     @Test
@@ -56,8 +56,8 @@ public class TestTextManager {
         text.insertChar('b');
         text.deleteChar();
         assertEquals("a", text.getLines().get(0));
-        assertEquals(1, text.getCursor().getRow());
-        assertEquals(2, text.getCursor().getColumn());
+        assertEquals(0, text.getCursor().getRow());
+        assertEquals(1, text.getCursor().getColumn());
     }
 
     @Test
@@ -67,8 +67,8 @@ public class TestTextManager {
         text.deleteChar();
         text.deleteChar();
         assertEquals("", text.getLines().get(0));
-        assertEquals(1, text.getCursor().getRow());
-        assertEquals(1, text.getCursor().getColumn());
+        assertEquals(0, text.getCursor().getRow());
+        assertEquals(0, text.getCursor().getColumn());
     }
 
     @Test
@@ -79,16 +79,16 @@ public class TestTextManager {
         text.getCursor().moveLeft();
         text.deleteChar();
         assertEquals("ac", text.getLines().get(0));
-        assertEquals(1, text.getCursor().getRow());
-        assertEquals(2, text.getCursor().getColumn());
+        assertEquals(0, text.getCursor().getRow());
+        assertEquals(1, text.getCursor().getColumn());
     }
 
     @Test
     void testDeleteCharEmpty() {
         text.deleteChar();
         assertEquals("", text.getLines().get(0));
-        assertEquals(1, text.getCursor().getRow());
-        assertEquals(1, text.getCursor().getColumn());
+        assertEquals(0, text.getCursor().getRow());
+        assertEquals(0, text.getCursor().getColumn());
     }
 
     @Test
