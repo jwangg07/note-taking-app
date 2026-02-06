@@ -97,6 +97,8 @@ public class TestTextManager {
         assertEquals(2, text.getLines().size());
         assertEquals("", text.getLines().get(0));
         assertEquals("", text.getLines().get(1));
+        assertEquals(1, text.getCursor().getRow());
+        assertEquals(0, text.getCursor().getColumn());
     }
 
     @Test
@@ -107,6 +109,8 @@ public class TestTextManager {
         assertEquals("", text.getLines().get(0));
         assertEquals("", text.getLines().get(1));
         assertEquals("", text.getLines().get(2));
+        assertEquals(2, text.getCursor().getRow());
+        assertEquals(0, text.getCursor().getColumn());
     }
 
     @Test
@@ -118,5 +122,7 @@ public class TestTextManager {
         assertEquals(2, text.getLines().size());
         assertEquals("a", text.getLines().get(0));
         assertEquals("b", text.getLines().get(1));
+        assertEquals(1, text.getCursor().getRow());
+        assertEquals(0, text.getCursor().getColumn());
     }
 }
