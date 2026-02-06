@@ -17,8 +17,8 @@ public class TestCursor {
     @Test
     void testConstructor() {
         cursor = new Cursor();
-        assertEquals(0, cursor.getRow());
-        assertEquals(0, cursor.getColumn());
+        assertEquals(1, cursor.getRow());
+        assertEquals(1, cursor.getColumn());
     }
 
     @Test
@@ -44,9 +44,9 @@ public class TestCursor {
 
     @Test
     void testMoveUpBorder() {
-        cursor = new Cursor(0, 2);
+        cursor = new Cursor(1, 2);
         cursor.moveUp();
-        assertEquals(0, cursor.getRow());
+        assertEquals(1, cursor.getRow());
         assertEquals(2, cursor.getColumn());
     }
 
@@ -97,9 +97,9 @@ public class TestCursor {
 
     @Test
     void testMoveLeftBorder() {
-        cursor = new Cursor(2, 0);
+        cursor = new Cursor(2, 1);
         cursor.moveLeft();
         assertEquals(2, cursor.getRow());
-        assertEquals(0, cursor.getColumn());
+        assertEquals(1, cursor.getColumn());
     }
 }
