@@ -102,4 +102,11 @@ public class TestCursor {
         assertEquals(2, cursor.getRow());
         assertEquals(0, cursor.getColumn());
     }
+
+    @Test
+    void testSetColumn() {
+        cursor.setColumn(0);
+        assertEquals(5, cursor.getRow());
+        assertEquals(0, cursor.getColumn());
+    }
 }

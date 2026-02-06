@@ -50,5 +50,9 @@ public class Cursor {
         return col;
     }
 
+    public void setColumn(int col) {
+        this.col = col; 
+    }
+
     // TODO: set a char limit, moving right at char limit goes to next row
 }
