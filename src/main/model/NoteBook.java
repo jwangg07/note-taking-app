@@ -40,7 +40,7 @@ public class NoteBook {
     // EFFECTS: returns note found with given title in list of notes, else null
     public Note getNote(String title) {
         for (Note n : notesList) {
-            if (n.getTitle() == title) {
+            if (n.getTitle().equals(title)) {
                 return n;
             }
         }
