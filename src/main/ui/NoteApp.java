@@ -25,12 +25,15 @@ public class NoteApp {
 
     // EFFECTS: prints initial instructions to use notebook
     public void printInstructions() {
+        for(int i = 0; i < 2; i++) System.out.println("");
         System.out.println("Welcome to your note app!");
         if (notebook.getAllNotes().isEmpty()) {
             System.out.println("You currently do not have any notes.");
+            System.out.println("");
         } else {
             System.out.println("Your notes:");
             displayNotes();
+            System.out.println("");
             System.out.println("s to select a note");
         }
         System.out.println("a to add a new note");
@@ -72,8 +75,12 @@ public class NoteApp {
 
     // EFFECTS: displays title and content of a note, prompts user for commands in the note
     public void displayNote(Note note) {
+        insertLine();
+        System.out.println("Currently viewing Note");
         System.out.println("Title: " + note.getTitle());
         System.out.println(note.getContent());
+        
+        System.out.println("");
 
         System.out.println("t to edit note title");
         System.out.println("c to edit note content");
@@ -85,7 +92,7 @@ public class NoteApp {
 
     // EFFECTS: prompts user for confirmation and deletes note from notebook
     public void deleteNote(Note note) {
-        String confirmation = input.promptInput("Enter note title to confirm deletion (or 'b' to back): ");
+        String confirmation = input.promptInput("Enter note title" + note.getTitle() + "to confirm deletion (or 'b' to back): ");
         if (confirmation.equals("b")) {
             displayNote(note);
         } else if (confirmation.equals(note.getTitle())) {
@@ -102,6 +109,7 @@ public class NoteApp {
     public void editNoteTitle(Note note) {
         String newTitle = input.promptInput("Enter new title: ");
         note.setTitle(newTitle);
+        System.out.println("Title set!");
         displayNote(note);
     }
 
@@ -109,10 +117,17 @@ public class NoteApp {
     public void editNoteContent(Note note) {
         String newContent = input.promptInput("Enter new content: ");
         note.setContent(newContent);
+        System.out.println("Content set!");
         displayNote(note);
     }
 
-    // EFFECTS: ends the program
+    // EFFECTS: inserts a horizontal line
+    public void insertLine() {
+        System.out.println("----------------------------------");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets program running to false
     public void end() {
         running = false;
     }
