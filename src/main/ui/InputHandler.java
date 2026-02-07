@@ -16,7 +16,7 @@ public class InputHandler {
 
     // EFFECTS: asks user for input with a message and returns user input
     public String promptInput(String message) {
-        System.out.println(message);
+        System.out.print(message);
         return getUserInput();
     }
 
