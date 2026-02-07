@@ -53,28 +53,31 @@ public class NoteApp {
 
         notebook.addNote(note);
         System.out.println("Note Created!");
-        displayNote(note, title);
+        displayNote(note);
     }
 
     // EFFECTS: handle input selecting note by title
     public void selectNote() {
-        String noteTitle = input.promptInput("Enter note title: ");
+        String noteTitle = input.promptInput("Enter note title (or 'b' to back): ");
         Note note = notebook.getNote(noteTitle);
-        if (note == null) {
-            System.out.println("Note with the name " + noteTitle + " was not found.");
+        if (noteTitle.equals("b")) {
+            printInstructions();
+        } else if (note != null) {
+            displayNote(note);
         } else {
-            displayNote(note, noteTitle);
+            System.out.println("Note with the name " + noteTitle + " was not found.");
+            selectNote();
         }
     }
 
     // EFFECTS: displays title and content of a note, prompts user for commands in the note
-    public void displayNote(Note note, String title) {
+    public void displayNote(Note note) {
         System.out.println("Title: " + note.getTitle());
         System.out.println(note.getContent());
 
         System.out.println("t to edit note title");
         System.out.println("c to edit note content");
-        System.out.println("d to delte note");
+        System.out.println("d to delete note");
         System.out.println("b to go back");
 
         input.parseInputNote(input.promptInput(""), note, this);
@@ -82,25 +85,31 @@ public class NoteApp {
 
     // EFFECTS: prompts user for confirmation and deletes note from notebook
     public void deleteNote(Note note) {
-        String confirmation = input.promptInput("Enter note title to confirm deletion");
-        if (confirmation == note.getTitle()) {
-            notebook.deleteNote(note);            
+        String confirmation = input.promptInput("Enter note title to confirm deletion (or 'b' to back): ");
+        if (confirmation.equals("b")) {
+            displayNote(note);
+        } else if (confirmation.equals(note.getTitle())) {
+            notebook.deleteNote(note);
+            System.out.println("Note Deleted!");
+            printInstructions();
         } else {
-            System.out.println("note title invalid");
+            System.out.println("title does not match");
             deleteNote(note);
         }
     }
-    
+
     // EFFECTS: sets title of selected note to user input
     public void editNoteTitle(Note note) {
         String newTitle = input.promptInput("Enter new title: ");
         note.setTitle(newTitle);
+        displayNote(note);
     }
 
     // EFFECTS: sets content of selected note to user input
     public void editNoteContent(Note note) {
         String newContent = input.promptInput("Enter new content: ");
-        note.setTitle(newContent);
+        note.setContent(newContent);
+        displayNote(note);
     }
 
     // EFFECTS: ends the program
