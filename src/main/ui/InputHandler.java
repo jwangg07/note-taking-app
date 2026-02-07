@@ -40,7 +40,7 @@ public class InputHandler {
                 break;
             default:
                 System.out.println("I didn't understand your command");
-                parseInputMain(input, app);
+                parseInputMain(promptInput(""), app);
                 break;
         }
     }
@@ -63,7 +63,7 @@ public class InputHandler {
                 break;
             default:
                 System.out.println("I didn't understand your command");
-                parseInputNote(input, note, app);
+                parseInputNote(promptInput(""), note, app);
                 break;
         }
     }
