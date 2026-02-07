@@ -19,14 +19,22 @@ public class NoteApp {
     // EFFECTS: run application until user quits
     public void run() {
         while (running) {
-            // stub
+            input.parseInputMain(input.promptInput(""), this);
         }
     }
 
     // EFFECTS: prints initial instructions to use notebook
     public void printInstructions() {
-        // stub
-
+        System.out.println("Welcome to your note app!");
+        if (notebook.getAllNotes().isEmpty()) {
+            System.out.println("You currently do not have any notes.");
+        } else {
+            System.out.println("Your notes:");
+            displayNotes();
+            System.out.println("s to select a note");
+        }
+        System.out.println("a to add a new note");
+        System.out.println("q to quit");
     }
 
     // EFFECTS: displays a list of notes in notebook by title
@@ -42,19 +50,34 @@ public class NoteApp {
         Note note = new Note(title);
         String content = input.promptInput("Write the content for this note: ");
         note.setContent(content);
+
         notebook.addNote(note);
+        System.out.println("Note Created!");
+        displayNote(note, title);
     }
 
-    // EFFECTS: displays title and content of a note, prompts user if they want to edit
+    // EFFECTS: handle input selecting note by title
     public void selectNote() {
         String noteTitle = input.promptInput("Enter note title: ");
         Note note = notebook.getNote(noteTitle);
         if (note == null) {
             System.out.println("Note with the name " + noteTitle + " was not found.");
         } else {
-            System.out.println("Title: " + note.getTitle());
-            System.out.println(note.getContent());
+            displayNote(note, noteTitle);
         }
+    }
+
+    // EFFECTS: displays title and content of a note, prompts user for commands in the note
+    public void displayNote(Note note, String title) {
+        System.out.println("Title: " + note.getTitle());
+        System.out.println(note.getContent());
+
+        System.out.println("t to edit note title");
+        System.out.println("c to edit note content");
+        System.out.println("d to delte note");
+        System.out.println("b to go back");
+
+        input.parseInputNote(input.promptInput(""), note, this);
     }
 
     // EFFECTS: prompts user for confirmation and deletes note from notebook
@@ -67,6 +90,7 @@ public class NoteApp {
             deleteNote(note);
         }
     }
+    
     // EFFECTS: sets title of selected note to user input
     public void editNoteTitle(Note note) {
         String newTitle = input.promptInput("Enter new title: ");
