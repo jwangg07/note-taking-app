@@ -1,5 +1,8 @@
 package ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Note;
 import model.NoteBook;
 
@@ -50,6 +53,9 @@ public class NoteApp {
     // EFFECTS: prompts user for title and content of the note and adds note to notebook
     public void createNote() {
         String title = input.promptInput("Create a title for this note: ");
+        while (!checkValidTitle(title)) {
+            title = input.promptInput("Create a title for this note: ");
+        }
         Note note = new Note(title);
         String content = input.promptInput("Write the content for this note: ");
         note.setContent(content);
@@ -108,6 +114,9 @@ public class NoteApp {
     // EFFECTS: sets title of selected note to user input
     public void editNoteTitle(Note note) {
         String newTitle = input.promptInput("Enter new title: ");
+        while (!checkValidTitle(newTitle)) {
+            newTitle = input.promptInput("Enter new title: ");
+        }
         note.setTitle(newTitle);
         System.out.println("Title set!");
         displayNote(note);
@@ -119,6 +128,24 @@ public class NoteApp {
         note.setContent(newContent);
         System.out.println("Content set!");
         displayNote(note);
+    }
+
+    // EFFECTS: returns true if title doesn't conflict with commands, false otherwise
+    private boolean checkValidTitle(String title) {
+        List<String> commands = new ArrayList<String>();
+        commands.add("a");
+        commands.add("s");
+        commands.add("q");
+        commands.add("t");
+        commands.add("c");
+        commands.add("d");
+        commands.add("b");
+
+        if (commands.contains(title)) {
+            System.out.println("Given title conflicts with a command");
+            return false;
+        } 
+        return true;
     }
 
     // EFFECTS: inserts a horizontal line
