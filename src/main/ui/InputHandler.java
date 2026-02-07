@@ -2,6 +2,8 @@ package ui;
 
 import java.util.Scanner;
 
+import model.Note;
+
 // Handles user input
 public class InputHandler {
 
@@ -23,37 +25,45 @@ public class InputHandler {
         return scanner.nextLine();
     }
 
+    // EFFECTS: handles user input on main screen while no notes are open, 
+    // commands to add note, select note, and quit application
     public void parseInputMain(String input, NoteApp app) {
         switch (input) {
             case "a": // add note
-                // stub
+                app.createNote();
                 break;
             case "s": // select note
-                // stub
+                app.selectNote();
                 break;
-            case "q": // quit
-                // stub
+            case "q": // quit application
+                app.end();
                 break;
             default:
+                System.out.println("I didn't understand your command");
+                parseInputMain(input, app);
                 break;
         }
     }
 
-    public void parseInputNote(String input, NoteApp app) {
+    // EFFECTS: handles user input while a note is open,
+    // commands to edit title, edit content, delete note, and go back to previous page
+    public void parseInputNote(String input, Note note, NoteApp app) {
         switch (input) {
             case "t": // edit title
-                // stub
+                app.editNoteTitle(note);
                 break;
             case "c": // edit content
-                // stub
+                app.editNoteContent(note);
                 break;
             case "d": // delete note
-                // stub
+                app.deleteNote(note);
                 break;
             case "b": // back
-                // stub
+                app.printInstructions();
                 break;
             default:
+                System.out.println("I didn't understand your command");
+                parseInputNote(input, note, app);
                 break;
         }
     }
