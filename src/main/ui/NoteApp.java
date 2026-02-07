@@ -92,7 +92,7 @@ public class NoteApp {
 
     // EFFECTS: prompts user for confirmation and deletes note from notebook
     public void deleteNote(Note note) {
-        String confirmation = input.promptInput("Enter note title" + note.getTitle() + "to confirm deletion (or 'b' to back): ");
+        String confirmation = input.promptInput("Enter note title (\"" + note.getTitle() + "\") to confirm deletion (or 'b' to back): ");
         if (confirmation.equals("b")) {
             displayNote(note);
         } else if (confirmation.equals(note.getTitle())) {
