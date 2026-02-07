@@ -22,7 +22,7 @@ public class InputHandler {
 
     // EFFECTS: returns user input
     private String getUserInput() {
-        return scanner.nextLine();
+        return scanner.nextLine().strip();
     }
 
     // EFFECTS: handles user input on main screen while no notes are open, 
