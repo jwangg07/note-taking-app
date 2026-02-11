@@ -6,13 +6,14 @@ import java.util.List;
 import model.Note;
 import model.NoteBook;
 
+// Represents the ui of the notes application
 public class NoteApp {
 
     NoteBook notebook;
     InputHandler input;
     boolean running;
 
-    // EFFECTS: creates notes app with new notebook
+    // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
         running = true;
         input = new InputHandler();

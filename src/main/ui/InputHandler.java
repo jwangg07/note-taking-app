@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import model.Note;
 
-// Handles user input
+// Represents the inputs made by the user
 public class InputHandler {
 
     private Scanner scanner;

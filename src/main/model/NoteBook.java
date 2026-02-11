@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-// Represents and operates on a collection of Notes 
+// Represents a notebook with a list of Notes 
 public class NoteBook {
     
     private ArrayList<Note> notesList;
@@ -13,9 +13,11 @@ public class NoteBook {
         notesList = new ArrayList<>();
     }
 
+    // REQUIRES: note title is distinct
     // MODIFIES: this
-    // EFFECTS: if note is not yet in list of notes, adds note to the list of notes and return true
-    // else, do nothing and return false
+    // EFFECTS: adds note to the end of list of notes and return true, 
+    // if the note is not yet in the list of notes, 
+    // otherwise do nothing and return false
     public boolean addNote(Note n) {
         // return false; // stub
         if (!notesList.contains(n)) {
@@ -26,10 +28,9 @@ public class NoteBook {
     }
 
     // MODIFIES: this
-    // EFFECTS: if note is found in list of notes, removes note from the list of notes and returns true
-    // else, do nothing and return false
+    // EFFECTS: if note is found in list of notes, remove note from the list of notes and returns true
+    // otherwise, do nothing and return false
     public boolean deleteNote(Note n) {
-        // return false; // stub
         if (notesList.contains(n)) {
             notesList.remove(n);
             return true;
@@ -37,7 +38,8 @@ public class NoteBook {
         return false;
     }
 
-    // EFFECTS: returns note found with given title in list of notes, else null
+    // EFFECTS: returns the note found with given title in list of notes, 
+    // otherwise, return null
     public Note getNote(String title) {
         for (Note n : notesList) {
             if (n.getTitle().equals(title)) {

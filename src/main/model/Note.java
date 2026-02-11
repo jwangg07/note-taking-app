@@ -1,12 +1,12 @@
 package model;
 
-// Represents and operates a Note 
+// Represents a note having a title and content
 public class Note {
 
     private String title;
     private String content;
 
-    // EFFECTS: Creates an empty note with given title and no content
+    // EFFECTS: Constructs a note with given title and no content
     public Note(String title) {
         this.title = title;
         content = "";
