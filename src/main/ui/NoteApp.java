@@ -29,7 +29,9 @@ public class NoteApp {
 
     // EFFECTS: prints initial instructions to use notebook
     public void printInstructions() {
-        for(int i = 0; i < 2; i++) System.out.println("");
+        for (int i = 0; i < 2; i++) {
+            System.out.println("");
+        }
         System.out.println("Welcome to your note app!");
         if (notebook.getAllNotes().isEmpty()) {
             System.out.println("You currently do not have any notes.");
@@ -99,7 +101,8 @@ public class NoteApp {
 
     // EFFECTS: prompts user for confirmation and deletes note from notebook
     public void deleteNote(Note note) {
-        String confirmation = input.promptInput("Enter note title (\"" + note.getTitle() + "\") to confirm deletion (or 'b' to back): ");
+        String confirmation = input.promptInput("Enter note title (\"" + note.getTitle() 
+                + "\") to confirm deletion (or 'b' to back): ");
         if (confirmation.equals("b")) {
             displayNote(note);
         } else if (confirmation.equals(note.getTitle())) {

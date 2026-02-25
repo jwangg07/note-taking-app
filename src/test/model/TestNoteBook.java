@@ -83,7 +83,7 @@ public class TestNoteBook {
         assertEquals(note1, notebook.getNote("note1"));
     }
 
-        @Test
+    @Test
     void getNoteNotFound() {
         notebook.addNote(note1);
         assertNull(notebook.getNote("note2"));
