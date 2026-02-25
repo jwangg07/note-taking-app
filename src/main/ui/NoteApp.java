@@ -3,10 +3,12 @@ package ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import model.Note;
 import model.NoteBook;
 
 // Represents the ui of the notes application
+@ExcludeFromJacocoGeneratedReport
 public class NoteApp {
 
     NoteBook notebook;

@@ -2,9 +2,11 @@ package ui;
 
 import java.util.Scanner;
 
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import model.Note;
 
 // Represents the inputs made by the user
+@ExcludeFromJacocoGeneratedReport
 public class InputHandler {
 
     private Scanner scanner;
