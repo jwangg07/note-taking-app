@@ -16,3 +16,5 @@ FastNote is a **lightweight** note-taking application that has all the *necessar
 - As a user, I want to be able to view a list of documents in my collection
 - As a user, I want to select a document in my collection to view and edit it
 - As a user, I want to remove a document from my collection
+- As a user, I want to be able to save individual documents when I want to
+- As a user, I want to be able to to load individual documents form a file when I want to
