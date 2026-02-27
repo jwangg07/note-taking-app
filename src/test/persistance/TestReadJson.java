@@ -18,7 +18,7 @@ public class TestReadJson {
     void testReadBadPath() {
         ReadJson readJson = new ReadJson("data/badpath.json");
         try {
-            readJson.jsonToNoteBook();
+            readJson.read();
             fail("IOException expected");
         } catch (IOException e) {
             // expected
@@ -29,7 +29,7 @@ public class TestReadJson {
     void testReadEmptyJson() {
         ReadJson readJson = new ReadJson("data/testReadEmptyNoteBook.json");
         try {
-            NoteBook notebook = readJson.jsonToNoteBook();
+            NoteBook notebook = readJson.read();
             assertEquals(0, notebook.getNumNotes());
         } catch (IOException e) {
             fail("IOException not expected");
@@ -40,7 +40,7 @@ public class TestReadJson {
     void testReadJson() {
         ReadJson readJson = new ReadJson("data/testReadNoteBook.json");
         try {
-            NoteBook notebook = readJson.jsonToNoteBook();
+            NoteBook notebook = readJson.read();
             assertEquals(2, notebook.getNumNotes());
             List<Note> notes = notebook.getAllNotes();
             checkNote("note1", "Hello World!", notes.get(0));

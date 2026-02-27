@@ -25,7 +25,7 @@ public class ReadJson {
 
     // EFFECTS: parses the JSON file and returns a notebook
     // throws IOException if an error occurs while reading data from the file
-    public NoteBook jsonToNoteBook() throws IOException {
+    public NoteBook read() throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
         try (Stream<String> stream = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
