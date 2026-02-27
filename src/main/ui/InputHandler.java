@@ -40,8 +40,14 @@ public class InputHandler {
             case "q": // quit application
                 app.end();
                 break;
+            case "load": // load notebook from file
+                app.loadNoteBook();
+                break;
+            case "save": // saves notebook to file
+                app.saveNoteBook();
+                break;
             default:
-                System.out.println("I didn't understand your command");
+                System.out.println("I didn't understand the command " + input);
                 parseInputMain(promptInput(""), app);
                 break;
         }

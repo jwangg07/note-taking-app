@@ -19,6 +19,7 @@ public class NoteApp {
     private NoteBook notebook;
     private InputHandler input;
     private boolean running;
+    private boolean load;
     private ReadJson readjson;
     private WriteJson writejson;
 
@@ -27,6 +28,7 @@ public class NoteApp {
         running = true;
         input = new InputHandler();
         notebook = new NoteBook();
+        load = false;
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
     }
@@ -44,6 +46,12 @@ public class NoteApp {
             System.out.println("");
         }
         System.out.println("Welcome to your note app!");
+        if (!load) {
+            System.out.println("You have a notebook saved! 'load' to load in notebook.");
+        }
+        if (true) {
+            System.out.println("You have unsaved changes! 'save' to save to file.");
+        }
         if (notebook.getAllNotes().isEmpty()) {
             System.out.println("You currently do not have any notes.");
             System.out.println("");
@@ -58,7 +66,7 @@ public class NoteApp {
     }
 
     // EFFECTS: displays a list of notes in notebook by title
-    public void displayNotes() {
+    private void displayNotes() {
         for (Note note : notebook.getAllNotes()) {
             System.out.println(note.getTitle());
         }
@@ -155,6 +163,8 @@ public class NoteApp {
         commands.add("c");
         commands.add("d");
         commands.add("b");
+        commands.add("load");
+        commands.add("save");
 
         if (commands.contains(title)) {
             System.out.println("Given title conflicts with a command");
@@ -173,6 +183,7 @@ public class NoteApp {
         try {
             writejson.write(notebook);
             System.out.println("Saved notebook to " + filePath);
+            printInstructions();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write notebook to file " + filePath);
         }
@@ -182,8 +193,9 @@ public class NoteApp {
     // EFFECTS: loads notebook from JSON file
     public void loadNoteBook() {
         try {
-            readjson.read();
+            notebook = readjson.read();
             System.out.println("Loaded notebook from " + filePath);
+            printInstructions();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
         }
