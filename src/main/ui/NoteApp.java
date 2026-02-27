@@ -21,7 +21,8 @@ public class NoteApp {
     private NoteBook notebook;
     private InputHandler input;
     private boolean running;
-    private boolean load;
+    private boolean loaded;
+    private boolean saved;
     private ReadJson readjson;
     private WriteJson writejson;
 
@@ -30,7 +31,8 @@ public class NoteApp {
         running = true;
         input = new InputHandler();
         notebook = new NoteBook();
-        load = false;
+        loaded = false;
+        saved = false;
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
     }
@@ -48,10 +50,10 @@ public class NoteApp {
             System.out.println("");
         }
         System.out.println("Welcome to your note app!");
-        if (!load) {
+        if (!loaded) {
             System.out.println("You have a notebook saved! 'load' to load in notebook.");
         }
-        if (!compareNoteBookToFile() && load) {
+        if (!compareNoteBookToFile() && (loaded || saved) || !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
             System.out.println("You have unsaved changes! 'save' to save to file.");
         }
         if (notebook.getAllNotes().isEmpty()) {
@@ -198,6 +200,7 @@ public class NoteApp {
         try {
             writejson.write(notebook);
             System.out.println("Saved notebook to " + filePath);
+            saved = true;
             printInstructions();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write notebook to file " + filePath);
@@ -210,7 +213,7 @@ public class NoteApp {
         try {
             notebook = readjson.read();
             System.out.println("Loaded notebook from " + filePath);
-            load = true;
+            loaded = true;
             printInstructions();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);

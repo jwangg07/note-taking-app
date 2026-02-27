@@ -47,7 +47,7 @@ public class InputHandler {
                 app.saveNoteBook();
                 break;
             default:
-                System.out.println("I didn't understand the command " + input);
+                System.out.println("I didn't understand the command: " + input);
                 parseInputMain(promptInput(""), app);
                 break;
         }
@@ -70,7 +70,7 @@ public class InputHandler {
                 app.printInstructions();
                 break;
             default:
-                System.out.println("I didn't understand your command");
+                System.out.println("I didn't understand the command: " + input);
                 parseInputNote(promptInput(""), note, app);
                 break;
         }
