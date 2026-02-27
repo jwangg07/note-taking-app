@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import model.Note;
 import model.NoteBook;
@@ -49,7 +51,7 @@ public class NoteApp {
         if (!load) {
             System.out.println("You have a notebook saved! 'load' to load in notebook.");
         }
-        if (!compareNoteBookToFile()) {
+        if (!compareNoteBookToFile() && load) {
             System.out.println("You have unsaved changes! 'save' to save to file.");
         }
         if (notebook.getAllNotes().isEmpty()) {
@@ -68,7 +70,14 @@ public class NoteApp {
     // EFFECTS: returns true if the current notebook is the same as the saved JSON file,
     // false otherwise
     private boolean compareNoteBookToFile() {
-        return false; // stub
+        JSONObject fileJson;
+        try {
+            fileJson = readjson.toJsonObject();
+            return notebook.toJson().similar(fileJson);
+        } catch (IOException e) {
+            System.out.println("Failed to read file: " + filePath);
+        }
+        return false;
     }
 
     // EFFECTS: displays a list of notes in notebook by title
@@ -201,6 +210,7 @@ public class NoteApp {
         try {
             notebook = readjson.read();
             System.out.println("Loaded notebook from " + filePath);
+            load = true;
             printInstructions();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);

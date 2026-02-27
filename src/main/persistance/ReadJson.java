@@ -23,9 +23,17 @@ public class ReadJson {
         this.path = path;
     }
 
-    // EFFECTS: parses the JSON file and returns a notebook
+    // EFFECTS: returns a notebook corresponding to JSON file
     // throws IOException if an error occurs while reading data from the file
     public NoteBook read() throws IOException {
+        NoteBook notebook = new NoteBook();
+        addNotes(notebook, toJsonObject());
+        return notebook; 
+    }
+
+    // EFFECTS: parses the JSON file and returns a JSONObject
+    // throws IOException if an error occurs while reading data from the file
+    public JSONObject toJsonObject() throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
 
         try (Stream<String> stream = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
@@ -35,9 +43,7 @@ public class ReadJson {
         String data = contentBuilder.toString();
         JSONObject jsonObject = new JSONObject(data);
 
-        NoteBook notebook = new NoteBook();
-        addNotes(notebook, jsonObject);
-        return notebook; 
+        return jsonObject;
     }
 
     // MODIFIES: notebook
