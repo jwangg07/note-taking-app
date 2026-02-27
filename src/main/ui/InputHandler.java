@@ -3,7 +3,6 @@ package ui;
 import java.util.Scanner;
 
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
-import model.Note;
 
 // Represents the inputs made by the user
 @ExcludeFromJacocoGeneratedReport
@@ -25,54 +24,5 @@ public class InputHandler {
     // EFFECTS: returns user input
     private String getUserInput() {
         return scanner.nextLine().strip();
-    }
-
-    // EFFECTS: handles user input on main screen while no notes are open, 
-    // commands to add note, select note, and quit application
-    public void parseInputMain(String input, NoteApp app) {
-        switch (input) {
-            case "a": // add note
-                app.createNote();
-                break;
-            case "s": // select note
-                app.selectNote();
-                break;
-            case "q": // quit application
-                app.end();
-                break;
-            case "load": // load notebook from file
-                app.loadNoteBook();
-                break;
-            case "save": // saves notebook to file
-                app.saveNoteBook();
-                break;
-            default:
-                System.out.println("I didn't understand the command: " + input);
-                parseInputMain(promptInput(""), app);
-                break;
-        }
-    }
-
-    // EFFECTS: handles user input while a note is open,
-    // commands to edit title, edit content, delete note, and go back to previous page
-    public void parseInputNote(String input, Note note, NoteApp app) {
-        switch (input) {
-            case "t": // edit title
-                app.editNoteTitle(note);
-                break;
-            case "c": // edit content
-                app.editNoteContent(note);
-                break;
-            case "d": // delete note
-                app.deleteNote(note);
-                break;
-            case "b": // back
-                app.printInstructions();
-                break;
-            default:
-                System.out.println("I didn't understand the command: " + input);
-                parseInputNote(promptInput(""), note, app);
-                break;
-        }
     }
 }
