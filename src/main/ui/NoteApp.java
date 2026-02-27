@@ -1,25 +1,34 @@
 package ui;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import model.Note;
 import model.NoteBook;
+import persistance.ReadJson;
+import persistance.WriteJson;
 
 // Represents the ui of the notes application
 @ExcludeFromJacocoGeneratedReport
 public class NoteApp {
 
-    NoteBook notebook;
-    InputHandler input;
-    boolean running;
+    private final String filePath = "data/noteBook.json";
+    private NoteBook notebook;
+    private InputHandler input;
+    private boolean running;
+    private ReadJson readjson;
+    private WriteJson writejson;
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
         running = true;
         input = new InputHandler();
         notebook = new NoteBook();
+        readjson = new ReadJson(filePath);
+        writejson = new WriteJson(filePath);
     }
 
     // EFFECTS: run application until user quits
@@ -161,13 +170,23 @@ public class NoteApp {
 
     // EFFECTS: saves the notebook to a JSON file
     public void saveNoteBook() {
-
+        try {
+            writejson.write(notebook);
+            System.out.println("Saved notebook to " + filePath);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write notebook to file " + filePath);
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: loads notebook from JSON file
     public void loadNoteBook() {
-        
+        try {
+            readjson.read();
+            System.out.println("Loaded notebook from " + filePath);
+        } catch (IOException e) {
+            System.out.println("Unable to read file " + filePath);
+        }
     }
 
     // MODIFIES: this
