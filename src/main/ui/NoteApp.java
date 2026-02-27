@@ -155,8 +155,19 @@ public class NoteApp {
     }
 
     // EFFECTS: inserts a horizontal line
-    public void insertLine() {
+    private void insertLine() {
         System.out.println("----------------------------------");
+    }
+
+    // EFFECTS: saves the notebook to a JSON file
+    public void saveNoteBook() {
+
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads notebook from JSON file
+    public void loadNoteBook() {
+        
     }
 
     // MODIFIES: this
