@@ -89,7 +89,8 @@ public class TestNoteBook {
         assertNull(notebook.getNote("note2"));
     }
 
-    @Test void getAllNotes() {
+    @Test 
+    void getAllNotes() {
         assertEquals(noteslist, notebook.getAllNotes());
         notebook.addNote(note1);
         noteslist.add(note1);
@@ -97,5 +98,14 @@ public class TestNoteBook {
         notebook.addNote(note2);
         noteslist.add(note2);
         assertEquals(noteslist, notebook.getAllNotes());
+    }
+
+    @Test 
+    void getNumNotes() {
+        assertEquals(0, notebook.getNumNotes());
+        notebook.addNote(note1); 
+        assertEquals(1, notebook.getNumNotes());
+        notebook.addNote(note2); 
+        assertEquals(2, notebook.getNumNotes());
     }
 }

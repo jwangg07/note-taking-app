@@ -52,4 +52,8 @@ public class NoteBook {
     public List<Note> getAllNotes() {
         return notesList;
     }
+
+    public int getNumNotes() {
+        return notesList.size();
+    }
 }
