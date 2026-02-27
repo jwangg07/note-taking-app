@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 // Represents a notebook with a list of Notes 
 public class NoteBook {
     
@@ -55,5 +57,10 @@ public class NoteBook {
 
     public int getNumNotes() {
         return notesList.size();
+    }
+
+    // EFFECTS: Converts notebook into a JSONObject
+    public JSONObject toJson() {
+        return null; // stub
     }
 }
