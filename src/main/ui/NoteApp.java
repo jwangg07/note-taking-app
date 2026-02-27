@@ -49,7 +49,7 @@ public class NoteApp {
         if (!load) {
             System.out.println("You have a notebook saved! 'load' to load in notebook.");
         }
-        if (true) {
+        if (!compareNoteBookToFile()) {
             System.out.println("You have unsaved changes! 'save' to save to file.");
         }
         if (notebook.getAllNotes().isEmpty()) {
@@ -63,6 +63,12 @@ public class NoteApp {
         }
         System.out.println("a to add a new note");
         System.out.println("q to quit");
+    }
+
+    // EFFECTS: returns true if the current notebook is the same as the saved JSON file,
+    // false otherwise
+    private boolean compareNoteBookToFile() {
+        return false; // stub
     }
 
     // EFFECTS: displays a list of notes in notebook by title
