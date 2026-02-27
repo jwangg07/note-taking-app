@@ -26,7 +26,7 @@ public class TestWriteJson {
 
     @Test
     void testWriteBadPath() {
-        WriteJson writeJson = new WriteJson("data/badpath.json");
+        WriteJson writeJson = new WriteJson("data/bad\\path.json");
         try {
             writeJson.write(notebook);
             fail("FileNotFoundException was expected");
@@ -37,11 +37,11 @@ public class TestWriteJson {
 
     @Test
     void testWriteEmptyNoteBook() {
-        WriteJson writeJson = new WriteJson("data/testWriteEmptyNote.json");
+        WriteJson writeJson = new WriteJson("data/testWriteEmptyNoteBook.json");
         try {
             writeJson.write(notebook);
 
-            ReadJson readJson = new ReadJson("data/testWriteEmptyNote.json");
+            ReadJson readJson = new ReadJson("data/testWriteEmptyNoteBook.json");
             notebook = readJson.read();
             assertEquals(0, notebook.getNumNotes());
         } catch (IOException e) {
@@ -58,7 +58,6 @@ public class TestWriteJson {
             writeJson.write(notebook);
             ReadJson readJson = new ReadJson("data/testWriteNoteBook.json");
             notebook = readJson.read();
-            assertEquals(0, notebook.getNumNotes());
             assertEquals(2, notebook.getNumNotes());
             List<Note> notes = notebook.getAllNotes();
             checkNote("note1", "Hello World!", notes.get(0));
