@@ -12,6 +12,12 @@ public class Note {
         content = "";
     }
 
+    // EFFECT: Constructs a note with given title and given content
+    public Note(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public String getTitle() {
         return title;
     }
