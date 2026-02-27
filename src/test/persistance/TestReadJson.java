@@ -8,16 +8,17 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import model.Note;
 import model.NoteBook;
-import persistance.ReadJson;
 
+@ExcludeFromJacocoGeneratedReport
 public class TestReadJson {
     @Test
     void testReadBadPath() {
         ReadJson readJson = new ReadJson("data/badpath.json");
         try {
-            NoteBook notebook = readJson.jsonToNoteBook();
+            readJson.jsonToNoteBook();
             fail("IOException expected");
         } catch (IOException e) {
             // expected
