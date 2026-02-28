@@ -98,8 +98,7 @@ public class NoteApp {
     }
 
     // EFFECTS: returns true if the current notebook is the same as the saved JSON
-    // file,
-    // false otherwise
+    // file, false otherwise
     private boolean compareNoteBookToFile() {
         JSONObject fileJson;
         try {
@@ -146,8 +145,8 @@ public class NoteApp {
         }
     }
 
-    // EFFECTS: returns true if title doesn't conflict with commands, false
-    // otherwise
+    // EFFECTS: returns true if title doesn't conflict with commands, 
+    // false otherwise
     private boolean checkValidTitle(String title) {
         List<String> commands = new ArrayList<String>();
         commands.add("a");

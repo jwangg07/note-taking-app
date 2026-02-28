@@ -7,6 +7,7 @@ import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import model.Note;
 import model.NoteBook;
 
+// Represents the ui of the note editor page
 @ExcludeFromJacocoGeneratedReport
 public class Editor {
 
@@ -78,8 +79,8 @@ public class Editor {
         displayNote(note);
     }
 
-    // EFFECTS: returns true if title doesn't conflict with commands, false
-    // otherwise
+    // EFFECTS: returns true if title doesn't conflict with commands,
+    // false otherwise
     private boolean checkValidTitle(String title) {
         List<String> commands = new ArrayList<String>();
         commands.add("a");
@@ -121,5 +122,5 @@ public class Editor {
 
     public void setNoteBook(NoteBook notebook) {
         this.notebook = notebook;
-    } 
+    }
 }
