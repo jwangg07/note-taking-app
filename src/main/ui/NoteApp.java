@@ -25,6 +25,7 @@ public class NoteApp {
     private boolean saved;
     private ReadJson readjson;
     private WriteJson writejson;
+    private Editor editor;
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
@@ -35,6 +36,7 @@ public class NoteApp {
         saved = false;
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
+        editor = new Editor(notebook);
     }
 
     // EFFECTS: run application until user quits
@@ -44,6 +46,31 @@ public class NoteApp {
             String command = input.promptInput("");
             handleCommands(command);
         }
+    }
+
+    // EFFECTS: prints initial instructions to use notebook
+    private void printInstructions() {
+        for (int i = 0; i < 2; i++) {
+            System.out.println("");
+        }
+        System.out.println("Welcome to your note app!");
+        if (!loaded && !saved) {
+            System.out.println("You have a notebook saved! 'load' to load in notebook.");
+        }
+        if (!compareNoteBookToFile() && (loaded || saved) || !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
+            System.out.println("You have unsaved changes! 'save' to save to file.");
+        }
+        if (notebook.getAllNotes().isEmpty()) {
+            System.out.println("You currently do not have any notes.");
+            System.out.println("");
+        } else {
+            System.out.println("Your notes:");
+            displayNotes();
+            System.out.println("");
+            System.out.println("s to select a note");
+        }
+        System.out.println("a to add a new note");
+        System.out.println("q to quit");
     }
 
     // EFFECTS: calls methods based on commands from user
@@ -68,52 +95,6 @@ public class NoteApp {
                 System.out.println("I didn't understand the command: " + command);
                 break;
         }
-    }
-
-    // EFFECTS: calls methods based on commands from user
-    private void handleCommands(String command, Note note) {
-        switch (command) {
-            case "t":
-                editNoteTitle(note);
-                break;
-            case "c":
-                editNoteContent(note);
-                break;
-            case "d":
-                deleteNote(note);
-                break;
-            case "b":
-                break;
-            default:
-                System.out.println("I didn't understand the command: " + command);
-                handleCommands(input.promptInput(""), note);
-                break;
-        }
-    }
-
-    // EFFECTS: prints initial instructions to use notebook
-    private void printInstructions() {
-        for (int i = 0; i < 2; i++) {
-            System.out.println("");
-        }
-        System.out.println("Welcome to your note app!");
-        if (!loaded) {
-            System.out.println("You have a notebook saved! 'load' to load in notebook.");
-        }
-        if (!compareNoteBookToFile() && (loaded || saved) || !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
-            System.out.println("You have unsaved changes! 'save' to save to file.");
-        }
-        if (notebook.getAllNotes().isEmpty()) {
-            System.out.println("You currently do not have any notes.");
-            System.out.println("");
-        } else {
-            System.out.println("Your notes:");
-            displayNotes();
-            System.out.println("");
-            System.out.println("s to select a note");
-        }
-        System.out.println("a to add a new note");
-        System.out.println("q to quit");
     }
 
     // EFFECTS: returns true if the current notebook is the same as the saved JSON
@@ -150,7 +131,7 @@ public class NoteApp {
 
         notebook.addNote(note);
         System.out.println("Note Created!");
-        displayNote(note);
+        editor.displayNote(note);
     }
 
     // EFFECTS: handle input selecting note by title
@@ -158,64 +139,11 @@ public class NoteApp {
         String noteTitle = input.promptInput("Enter note title (or 'b' to back): ");
         Note note = notebook.getNote(noteTitle);
         if (note != null) {
-            displayNote(note);
+            editor.displayNote(note);
         } else {
             System.out.println("Note with the name " + noteTitle + " was not found.");
             selectNote();
         }
-    }
-
-    // EFFECTS: displays title and content of a note, prompts user for commands in
-    // the note
-    private void displayNote(Note note) {
-        insertLine();
-        System.out.println("Currently viewing Note");
-        System.out.println("Title: " + note.getTitle());
-        System.out.println(note.getContent());
-
-        System.out.println("");
-
-        System.out.println("t to edit note title");
-        System.out.println("c to edit note content");
-        System.out.println("d to delete note");
-        System.out.println("b to go back");
-
-        String command = input.promptInput("");
-        handleCommands(command, note);
-    }
-
-    // EFFECTS: prompts user for confirmation and deletes note from notebook
-    private void deleteNote(Note note) {
-        String confirmation = input.promptInput("Enter note title (\"" + note.getTitle()
-                + "\") to confirm deletion (or 'b' to back): ");
-        if (confirmation.equals("b")) {
-            displayNote(note);
-        } else if (confirmation.equals(note.getTitle())) {
-            notebook.deleteNote(note);
-            System.out.println("Note Deleted!");
-        } else {
-            System.out.println("title does not match");
-            deleteNote(note);
-        }
-    }
-
-    // EFFECTS: sets title of selected note to user input
-    private void editNoteTitle(Note note) {
-        String newTitle = input.promptInput("Enter new title: ");
-        while (!checkValidTitle(newTitle)) {
-            newTitle = input.promptInput("Enter new title: ");
-        }
-        note.setTitle(newTitle);
-        System.out.println("Title set!");
-        displayNote(note);
-    }
-
-    // EFFECTS: sets content of selected note to user input
-    private void editNoteContent(Note note) {
-        String newContent = input.promptInput("Enter new content: ");
-        note.setContent(newContent);
-        System.out.println("Content set!");
-        displayNote(note);
     }
 
     // EFFECTS: returns true if title doesn't conflict with commands, false
@@ -239,11 +167,6 @@ public class NoteApp {
         return true;
     }
 
-    // EFFECTS: inserts a horizontal line
-    private void insertLine() {
-        System.out.println("----------------------------------");
-    }
-
     // EFFECTS: saves the notebook to a JSON file
     private void saveNoteBook() {
         try {
@@ -261,6 +184,7 @@ public class NoteApp {
         try {
             notebook = readjson.read();
             System.out.println("Loaded notebook from " + filePath);
+            editor.setNoteBook(notebook);
             loaded = true;
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
