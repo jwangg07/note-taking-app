@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +49,13 @@ public class NoteApp {
         }
     }
 
-    // EFFECTS: prints initial instructions to use notebook
+    // EFFECTS: draws all background elements
+    private void drawNoteBook() {
+        // stub
+    }
+
+    // EFFECTS: displays a list of useable commands in the bottom left and
+    // notifications in the top left
     private void printInstructions() {
         for (int i = 0; i < 2; i++) {
             System.out.println("");
@@ -71,6 +78,11 @@ public class NoteApp {
         }
         System.out.println("a to add a new note");
         System.out.println("q to quit");
+    }
+
+    // EFFECTS: calls methods based on user interaction
+    private void actionPerformed(ActionEvent e) {
+        // stub
     }
 
     // EFFECTS: calls methods based on commands from user
@@ -110,15 +122,15 @@ public class NoteApp {
         return false;
     }
 
-    // EFFECTS: displays a list of notes in notebook by title
+    // EFFECTS: displays each note in notebook as a box with title and content
     private void displayNotes() {
         for (Note note : notebook.getAllNotes()) {
             System.out.println(note.getTitle());
         }
     }
 
-    // EFFECTS: prompts user for title and content of the note and adds note to
-    // notebook
+    // EFFECTS: create a popup prompting user for title and content of the note and
+    // adds note to notebook
     private void createNote() {
         String title = input.promptInput("Create a title for this note: ");
         while (!checkValidTitle(title)) {
@@ -133,7 +145,7 @@ public class NoteApp {
         editor.displayNote(note);
     }
 
-    // EFFECTS: handle input selecting note by title
+    // EFFECTS: handle input selecting note by mouseclick position
     private void selectNote() {
         String noteTitle = input.promptInput("Enter note title (or 'b' to back): ");
         Note note = notebook.getNote(noteTitle);
@@ -145,7 +157,7 @@ public class NoteApp {
         }
     }
 
-    // EFFECTS: returns true if title doesn't conflict with commands, 
+    // EFFECTS: returns true if title doesn't conflict with commands,
     // false otherwise
     private boolean checkValidTitle(String title) {
         List<String> commands = new ArrayList<String>();
