@@ -1,10 +1,25 @@
 package ui;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.json.JSONObject;
 
@@ -16,7 +31,7 @@ import persistance.WriteJson;
 
 // Represents the ui of the notes application
 @ExcludeFromJacocoGeneratedReport
-public class NoteApp {
+public class NoteApp implements ActionListener {
 
     private final String filePath = "data/noteBook.json";
     private NoteBook notebook;
@@ -28,6 +43,13 @@ public class NoteApp {
     private WriteJson writejson;
     private Editor editor;
 
+    private JFrame frame = new JFrame("Notebook");
+    private GridBagConstraints c = new GridBagConstraints();
+    private final int WIDTH = 1200;
+    private final int HEIGHT = 900;
+    private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
+    private final Color NOTE_COLOR = new Color(255, 235, 161);
+
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
         running = true;
@@ -38,51 +60,144 @@ public class NoteApp {
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
         editor = new Editor(notebook);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        frame.getContentPane().setBackground(BACKGROUND_COLOR);
+
+        frame.setLayout(new GridBagLayout());
+
+        drawNoteBook();
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.setResizable(false);
+
     }
 
     // EFFECTS: run application until user quits
     public void run() {
         while (running) {
-            printInstructions();
+            // printInstructions();
             String command = input.promptInput("");
             handleCommands(command);
         }
     }
 
-    // EFFECTS: draws all background elements
+    // EFFECTS: draws all background elements: buttons top right, notifications top
+    // left
     private void drawNoteBook() {
-        // stub
-    }
 
-    // EFFECTS: displays a list of useable commands in the bottom left and
-    // notifications in the top left
-    private void printInstructions() {
-        for (int i = 0; i < 2; i++) {
-            System.out.println("");
-        }
-        System.out.println("Welcome to your note app!");
+        frame.setBackground(Color.DARK_GRAY);
+
+        // Top Left
+        JPanel notifications = new JPanel();
+        notifications.setLayout(new BoxLayout(notifications, BoxLayout.PAGE_AXIS));
+        notifications.setBackground(BACKGROUND_COLOR);
+        notifications.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        JLabel welcomeMessage = new JLabel("Welcome to your note app!");
+        welcomeMessage.setForeground(NOTE_COLOR);
+        welcomeMessage.setFont(new Font("Default", Font.PLAIN, 16));
+        notifications.add(welcomeMessage);
+
         if (!loaded && !saved) {
-            System.out.println("You have a notebook saved! 'load' to load in notebook.");
+            // System.out.println("You have a notebook saved! 'load' to load in notebook.");
+            JLabel loadAvailable = new JLabel("You have a notebook saved!");
+            loadAvailable.setForeground(NOTE_COLOR.darker());
+            loadAvailable.setFont(new Font("Default", Font.PLAIN, 16));
+            notifications.add(loadAvailable);
         }
-        if (!compareNoteBookToFile() && (loaded || saved) || !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
-            System.out.println("You have unsaved changes! 'save' to save to file.");
+        
+        if (!compareNoteBookToFile() && (loaded || saved) ||
+        !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
+            // System.out.println("You have unsaved changes! 'save' to save to file.");
+            JLabel saveAvailable = new JLabel("You have unsaved changes!");
+            saveAvailable.setForeground(NOTE_COLOR.darker());
+            saveAvailable.setFont(new Font("Default", Font.PLAIN, 16));
+            notifications.add(saveAvailable);
         }
-        if (notebook.getAllNotes().isEmpty()) {
-            System.out.println("You currently do not have any notes.");
-            System.out.println("");
-        } else {
-            System.out.println("Your notes:");
-            displayNotes();
-            System.out.println("");
-            System.out.println("s to select a note");
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.fill = GridBagConstraints.NONE;
+        c.insets = new Insets(0, 0, 0, 0);
+        c.weightx = 0;
+        c.weighty = 0;
+        frame.add(notifications, c);
+
+        // Top Right
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+        buttons.setBackground(BACKGROUND_COLOR);
+        
+        JButton addNoteButton = new JButton("Add Note");
+        addNoteButton.setBackground(NOTE_COLOR);
+        addNoteButton.setBorderPainted(false);
+        addNoteButton.setFocusPainted(false);
+        addNoteButton.setActionCommand("addNote");
+        addNoteButton.addActionListener(this);
+        buttons.add(addNoteButton);
+        
+        if (!loaded && !saved) {
+            // System.out.println("You have a notebook saved! 'load' to load in notebook.");
+            JButton loadButton = new JButton("Load Notes");
+            loadButton.setBackground(NOTE_COLOR);
+            loadButton.setBorderPainted(false);
+            loadButton.setFocusPainted(false);
+            loadButton.setActionCommand("loadNotes");
+            loadButton.addActionListener(this);
+            buttons.add(loadButton);
         }
-        System.out.println("a to add a new note");
-        System.out.println("q to quit");
+        
+        if (!compareNoteBookToFile() && (loaded || saved) ||
+        !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
+            // System.out.println("You have unsaved changes! 'save' to save to file.");
+            JButton saveAvailable = new JButton("Save Notes");
+            saveAvailable.setBackground(NOTE_COLOR);
+            saveAvailable.setBorderPainted(false);
+            saveAvailable.setFocusPainted(false);
+            saveAvailable.setActionCommand("saveNotes");
+            saveAvailable.addActionListener(this);
+            buttons.add(saveAvailable);
+        }
+
+        c.gridx = 1;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.FIRST_LINE_END;
+        c.fill = GridBagConstraints.NONE;
+        c.insets = new Insets(0, 0, 0, 0);
+        c.weightx = 1;
+        c.weighty = 0;
+        frame.add(buttons, c);
+
+        // Rest of space
+        JPanel workspace = new JPanel();
+        workspace.setBackground(Color.DARK_GRAY);
+        workspace.setLayout(new BoxLayout(workspace, BoxLayout.PAGE_AXIS));
+        
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 0, 0, 0);
+        c.weightx = 1;
+        c.weighty = 1;
+        frame.add(workspace, c);
     }
 
     // EFFECTS: calls methods based on user interaction
-    private void actionPerformed(ActionEvent e) {
-        // stub
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("addNote")) {
+            createNote();
+        } else if (e.getActionCommand().equals("loadNotes")) {
+            loadNoteBook();
+        } else if (e.getActionCommand().equals("saveNotes")) {
+            saveNoteBook();
+        }
     }
 
     // EFFECTS: calls methods based on commands from user
