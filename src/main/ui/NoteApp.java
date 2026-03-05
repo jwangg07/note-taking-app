@@ -7,14 +7,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -36,7 +32,7 @@ import model.NoteBook;
 import persistance.ReadJson;
 import persistance.WriteJson;
 
-// Represents the ui of the notes application
+// Represents the GUI of the notes application
 @ExcludeFromJacocoGeneratedReport
 public class NoteApp implements ActionListener {
 
@@ -57,25 +53,22 @@ public class NoteApp implements ActionListener {
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
-
         notebook = new NoteBook();
         loaded = false;
         saved = false;
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
 
+        // GUI SETUP
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-
         frame.getContentPane().setBackground(BACKGROUND_COLOR);
-
         frame.setLayout(new GridBagLayout());
-
-        drawNoteBook();
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setResizable(false);
+        drawNoteBook();
 
     }
 
@@ -85,12 +78,7 @@ public class NoteApp implements ActionListener {
         workspace.setBackground(BACKGROUND_COLOR);
         workspace.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
         workspace.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 1;
+        setGridBagConstraints(0, 1, 2, GridBagConstraints.BOTH, 1, 1, GridBagConstraints.CENTER);
         frame.add(workspace, c);
 
         // NOTIFICATIONS
@@ -99,32 +87,20 @@ public class NoteApp implements ActionListener {
         notifications.setBackground(BACKGROUND_COLOR);
         notifications.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel welcomeMessage = new JLabel("Welcome to your note app!");
-        welcomeMessage.setForeground(NOTE_COLOR);
-        welcomeMessage.setFont(new Font("Default", Font.PLAIN, 16));
+        JLabel welcomeMessage = createLabel("Welcome to your note app!", NOTE_COLOR, 16);
         notifications.add(welcomeMessage);
 
         if (!loaded && !saved) {
-            JLabel loadAvailable = new JLabel("You have a notebook saved!");
-            loadAvailable.setForeground(NOTE_COLOR.darker());
-            loadAvailable.setFont(new Font("Default", Font.PLAIN, 16));
+            JLabel loadAvailable = createLabel("You have a notebook saved!", NOTE_COLOR.darker(), 16);
             notifications.add(loadAvailable);
         }
 
         if (!compareNoteBookToFile() && (loaded || saved) ||
                 !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
-            JLabel saveAvailable = new JLabel("You have unsaved changes!");
-            saveAvailable.setForeground(NOTE_COLOR.darker());
-            saveAvailable.setFont(new Font("Default", Font.PLAIN, 16));
+            JLabel saveAvailable = createLabel("You have unsaved changes!", NOTE_COLOR.darker(), 16);
             notifications.add(saveAvailable);
         }
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.weighty = 0;
+        setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
         frame.add(notifications, c);
 
         // BUTTONS
@@ -146,18 +122,36 @@ public class NoteApp implements ActionListener {
             buttons.add(saveAvailable);
         }
 
-        c.gridx = 1;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.FIRST_LINE_END;
-        c.weightx = 1;
-        c.weighty = 0;
+        setGridBagConstraints(1, 0, 1, GridBagConstraints.NONE, 1, 0, GridBagConstraints.FIRST_LINE_END);
         frame.add(buttons, c);
+
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    // EFFECTS: Modifies GridBagConstraints based on parameters
+    private void setGridBagConstraints(int beginX, int beginY, int widthSpan, int fill, int weightX, int weightY, int anchor) {
+        c.gridx = beginX;
+        c.gridy = beginY;
+        c.gridwidth = widthSpan;
+        c.fill = fill;
+        c.weightx = weightX;
+        c.weighty = weightY;
+        c.anchor = anchor;
+    }
+
+    // EFFECTS: Creates a JLabel based on given parameters and returns it
+    private JLabel createLabel(String text, Color textColor, int textSize) {
+        JLabel label = new JLabel(text);
+        label.setForeground(textColor);
+        label.setFont(new Font("Default", Font.PLAIN, textSize));
+        return label;
     }
 
     // EFFECTS: creates a JButton based on the given parameters and returns it
-    private JButton createButton(String text, Color bg_color, String command) {
+    private JButton createButton(String text, Color bgColor, String command) {
         JButton button = new JButton(text);
-        button.setBackground(bg_color);
+        button.setBackground(bgColor);
         button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setActionCommand(command);
@@ -198,10 +192,8 @@ public class NoteApp implements ActionListener {
             noteContainer.setPreferredSize(new Dimension(200, 200));
             noteContainer.setBackground(NOTE_COLOR);
 
-            JLabel title = new JLabel(note.getTitle());
-            title.setFont(new Font("Default", Font.BOLD, 18));
+            JLabel title = createLabel(note.getTitle(), Color.BLACK, 18);
             title.setBorder(new EmptyBorder(10, 10, 10, 10));
-            title.setForeground(Color.BLACK);
             noteContainer.add(title);
 
             JTextArea content = new JTextArea(note.getContent());
@@ -242,8 +234,7 @@ public class NoteApp implements ActionListener {
         newNote.setLocationRelativeTo(frame);
         newNote.setVisible(true);
 
-        JLabel titleLabel = new JLabel("Title:");
-        titleLabel.setForeground(Color.BLACK);
+        JLabel titleLabel = createLabel("Title:", Color.BLACK, 12);
         titleLabel.setBounds(20, 20, 50, 25);
         newNote.add(titleLabel);
 
@@ -253,26 +244,19 @@ public class NoteApp implements ActionListener {
         titleField.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
         newNote.add(titleField);
 
-        JLabel contentLabel = new JLabel("Content:");
-        contentLabel.setForeground(Color.BLACK);
+        JLabel contentLabel = createLabel("Content:", Color.black, 12);
         contentLabel.setBounds(20, 60, 60, 25);
         newNote.add(contentLabel);
 
-        JTextArea contentTextArea = new JTextArea();
+        JTextArea contentTextArea = createTextArea("", Color.BLACK, NOTE_COLOR);
         contentTextArea.setBounds(20, 90, 350, 120);
-        contentTextArea.setBackground(NOTE_COLOR);
         contentTextArea.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
-        contentTextArea.setLineWrap(true);
-        contentTextArea.setWrapStyleWord(true);
         newNote.add(contentTextArea);
 
         // JButton createButton = new JButton("Create Note");
         JButton createButton = createButton("Create Note", BACKGROUND_COLOR, null);
         createButton.setBounds(250, 220, 120, 30);
         createButton.setForeground(Color.WHITE);
-        // createButton.setBackground(BACKGROUND_COLOR);
-        // createButton.setBorderPainted(false);
-        // createButton.setFocusPainted(false);
         newNote.add(createButton);
 
         // Code adapted from stack overflow:
@@ -289,6 +273,16 @@ public class NoteApp implements ActionListener {
         });
     }
 
+    // EFFECTS: Creates a JTextArea based on parameters and returns it
+    private JTextArea createTextArea(String text, Color textColor, Color bgColor) {
+        JTextArea textArea = new JTextArea(text);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setOpaque(false);
+        textArea.setForeground(textColor);
+        return textArea;
+    } 
+
     // EFFECTS: displays title and content of a note, prompts user for commands in
     // the note
     public void displayNote(Note note) {
@@ -302,20 +296,11 @@ public class NoteApp implements ActionListener {
         noteView.setLocationRelativeTo(frame);
         noteView.setVisible(true);
 
-        JTextArea title = new JTextArea(note.getTitle());
-        title.setLineWrap(true);
-        title.setWrapStyleWord(true);
-        title.setOpaque(false);
-        title.setForeground(Color.BLACK);
+        JTextArea title = createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR);
         title.setBounds(20, 20, 400, 25);
         noteView.add(title);
 
-        JTextArea content = new JTextArea(note.getContent());
-        content.setLineWrap(true);
-        content.setWrapStyleWord(true);
-        content.setOpaque(false);
-        content.setBackground(NOTE_COLOR);
-        content.setForeground(Color.BLACK);
+        JTextArea content = createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR);
         content.setBounds(20, 60, 350, 200);
         noteView.add(content);
 
