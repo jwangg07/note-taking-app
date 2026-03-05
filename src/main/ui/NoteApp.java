@@ -22,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 import org.json.JSONObject;
 
@@ -188,27 +187,25 @@ public class NoteApp implements ActionListener {
         workspace.removeAll();
         for (Note note : notebook.getAllNotes()) {
             JPanel noteContainer = new JPanel();
-            noteContainer.setLayout(new BoxLayout(noteContainer, BoxLayout.Y_AXIS));
+            // noteContainer.setLayout(new BoxLayout(noteContainer, BoxLayout.Y_AXIS));
+            noteContainer.setLayout(null);
             noteContainer.setPreferredSize(new Dimension(200, 200));
             noteContainer.setBackground(NOTE_COLOR);
 
             JLabel title = createLabel(note.getTitle(), Color.BLACK, 18);
-            title.setBorder(new EmptyBorder(10, 10, 10, 10));
+            title.setBounds(10, 10, 180, 20);
+            // title.setBorder(new EmptyBorder(10, 10, 10, 10));
             noteContainer.add(title);
 
-            JTextArea content = new JTextArea(note.getContent());
+            JTextArea content = createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR);
             content.setEditable(false);
-            content.setLineWrap(true);
-            content.setWrapStyleWord(true);
-            content.setOpaque(false);
             content.setFocusable(false);
-            content.setBorder(new EmptyBorder(0, 10, 10, 10));
-            content.setBackground(NOTE_COLOR);
-            content.setForeground(Color.BLACK);
+            content.setBounds(10, 40, 180, 150);
             noteContainer.add(content);
             
-            JButton openNoteButton = createButton("open note", BACKGROUND_COLOR, null);
-            openNoteButton.setForeground(Color.WHITE);
+            JButton openNoteButton = createButton("", null, null);
+            openNoteButton.setBounds(0, 0, 200, 200);
+            openNoteButton.setOpaque(false);
             noteContainer.add(openNoteButton);
 
             openNoteButton.addActionListener(event -> {
@@ -253,7 +250,6 @@ public class NoteApp implements ActionListener {
         contentTextArea.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
         newNote.add(contentTextArea);
 
-        // JButton createButton = new JButton("Create Note");
         JButton createButton = createButton("Create Note", BACKGROUND_COLOR, null);
         createButton.setBounds(250, 220, 120, 30);
         createButton.setForeground(Color.WHITE);
