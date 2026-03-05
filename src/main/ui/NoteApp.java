@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.json.JSONObject;
 
@@ -187,20 +188,19 @@ public class NoteApp implements ActionListener {
         workspace.removeAll();
         for (Note note : notebook.getAllNotes()) {
             JPanel noteContainer = new JPanel();
-            // noteContainer.setLayout(new BoxLayout(noteContainer, BoxLayout.Y_AXIS));
             noteContainer.setLayout(null);
             noteContainer.setPreferredSize(new Dimension(200, 200));
             noteContainer.setBackground(NOTE_COLOR);
 
             JLabel title = createLabel(note.getTitle(), Color.BLACK, 18);
             title.setBounds(10, 10, 180, 20);
-            // title.setBorder(new EmptyBorder(10, 10, 10, 10));
             noteContainer.add(title);
 
-            JTextArea content = createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR);
-            content.setEditable(false);
-            content.setFocusable(false);
+            // Code adapted from Stack Overflow:
+            // https://stackoverflow.com/questions/2420742/make-a-jlabel-wrap-its-text-by-setting-a-max-width#:~:text=see%20also%20stackoverflow.com/questions,%22%22);
+            JLabel content = createLabel("<html>" + note.getContent() + "</html>", Color.BLACK, 12);
             content.setBounds(10, 40, 180, 150);
+            content.setVerticalAlignment(SwingConstants.TOP);
             noteContainer.add(content);
             
             JButton openNoteButton = createButton("", null, null);
@@ -211,6 +211,7 @@ public class NoteApp implements ActionListener {
             openNoteButton.addActionListener(event -> {
                 displayNote(note);
             });
+
             
             workspace.add(noteContainer);
         }
