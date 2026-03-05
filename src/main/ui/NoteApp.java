@@ -1,11 +1,13 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import org.json.JSONObject;
 
@@ -39,13 +42,10 @@ public class NoteApp implements ActionListener {
 
     private final String filePath = "data/noteBook.json";
     private NoteBook notebook;
-    private InputHandler input;
-    private boolean running;
     private boolean loaded;
     private boolean saved;
     private ReadJson readjson;
     private WriteJson writejson;
-    private Editor editor;
 
     private JFrame frame = new JFrame("Notebook");
     private GridBagConstraints c = new GridBagConstraints();
@@ -57,14 +57,12 @@ public class NoteApp implements ActionListener {
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
-        running = true;
-        input = new InputHandler();
+
         notebook = new NoteBook();
         loaded = false;
         saved = false;
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
-        editor = new Editor(notebook);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -81,21 +79,12 @@ public class NoteApp implements ActionListener {
 
     }
 
-    // EFFECTS: run application until user quits
-    public void run() {
-        while (running) {
-            // printInstructions();
-            String command = input.promptInput("");
-            handleCommands(command);
-        }
-    }
-
     // EFFECTS: draws all background elements: buttons top right, notifications top
     // left
     private void drawNoteBook() {
         workspace.setBackground(BACKGROUND_COLOR);
-        workspace.setLayout(null);
-
+        workspace.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
+        workspace.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
@@ -143,32 +132,17 @@ public class NoteApp implements ActionListener {
         buttons.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         buttons.setBackground(BACKGROUND_COLOR);
 
-        JButton addNoteButton = new JButton("Add Note");
-        addNoteButton.setBackground(NOTE_COLOR);
-        addNoteButton.setBorderPainted(false);
-        addNoteButton.setFocusPainted(false);
-        addNoteButton.setActionCommand("addNote");
-        addNoteButton.addActionListener(this);
+        JButton addNoteButton = createButton("Add Note", NOTE_COLOR, "addNote");
         buttons.add(addNoteButton);
 
         if (!loaded && !saved) {
-            JButton loadButton = new JButton("Load Notes");
-            loadButton.setBackground(NOTE_COLOR);
-            loadButton.setBorderPainted(false);
-            loadButton.setFocusPainted(false);
-            loadButton.setActionCommand("loadNotes");
-            loadButton.addActionListener(this);
+            JButton loadButton = createButton("Load Notes", NOTE_COLOR, "loadNotes");
             buttons.add(loadButton);
         }
 
         if (!compareNoteBookToFile() && (loaded || saved) ||
                 !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
-            JButton saveAvailable = new JButton("Save Notes");
-            saveAvailable.setBackground(NOTE_COLOR);
-            saveAvailable.setBorderPainted(false);
-            saveAvailable.setFocusPainted(false);
-            saveAvailable.setActionCommand("saveNotes");
-            saveAvailable.addActionListener(this);
+            JButton saveAvailable = createButton("Save Notes", NOTE_COLOR, "saveNotes");
             buttons.add(saveAvailable);
         }
 
@@ -180,6 +154,17 @@ public class NoteApp implements ActionListener {
         frame.add(buttons, c);
     }
 
+    // EFFECTS: creates a JButton based on the given parameters and returns it
+    private JButton createButton(String text, Color bg_color, String command) {
+        JButton button = new JButton(text);
+        button.setBackground(bg_color);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setActionCommand(command);
+        button.addActionListener(this);
+        return button;
+    }
+
     // EFFECTS: calls methods based on user interaction
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("addNote")) {
@@ -188,30 +173,6 @@ public class NoteApp implements ActionListener {
             loadNoteBook();
         } else if (e.getActionCommand().equals("saveNotes")) {
             saveNoteBook();
-        }
-    }
-
-    // EFFECTS: calls methods based on commands from user
-    private void handleCommands(String command) {
-        switch (command) {
-            case "a":
-                createNote();
-                break;
-            case "s":
-                selectNote();
-                break;
-            case "q":
-                end();
-                break;
-            case "load":
-                loadNoteBook();
-                break;
-            case "save":
-                saveNoteBook();
-                break;
-            default:
-                System.out.println("I didn't understand the command: " + command);
-                break;
         }
     }
 
@@ -230,9 +191,42 @@ public class NoteApp implements ActionListener {
 
     // EFFECTS: displays each note in notebook as a box with title and content
     private void displayNotes() {
+        workspace.removeAll();
         for (Note note : notebook.getAllNotes()) {
-            System.out.println(note.getTitle());
+            JPanel noteContainer = new JPanel();
+            noteContainer.setLayout(new BoxLayout(noteContainer, BoxLayout.Y_AXIS));
+            noteContainer.setPreferredSize(new Dimension(200, 200));
+            noteContainer.setBackground(NOTE_COLOR);
+
+            JLabel title = new JLabel(note.getTitle());
+            title.setFont(new Font("Default", Font.BOLD, 18));
+            title.setBorder(new EmptyBorder(10, 10, 10, 10));
+            title.setForeground(Color.BLACK);
+            noteContainer.add(title);
+
+            JTextArea content = new JTextArea(note.getContent());
+            content.setEditable(false);
+            content.setLineWrap(true);
+            content.setWrapStyleWord(true);
+            content.setOpaque(false);
+            content.setFocusable(false);
+            content.setBorder(new EmptyBorder(0, 10, 10, 10));
+            content.setBackground(NOTE_COLOR);
+            content.setForeground(Color.BLACK);
+            noteContainer.add(content);
+            
+            JButton openNoteButton = createButton("open note", BACKGROUND_COLOR, null);
+            openNoteButton.setForeground(Color.WHITE);
+            noteContainer.add(openNoteButton);
+
+            openNoteButton.addActionListener(event -> {
+                displayNote(note);
+            });
+            
+            workspace.add(noteContainer);
         }
+        workspace.revalidate();
+        workspace.repaint();
     }
 
     // EFFECTS: create a popup prompting user for title and content of the note and
@@ -272,12 +266,13 @@ public class NoteApp implements ActionListener {
         contentTextArea.setWrapStyleWord(true);
         newNote.add(contentTextArea);
 
-        JButton createButton = new JButton("Create Note");
+        // JButton createButton = new JButton("Create Note");
+        JButton createButton = createButton("Create Note", BACKGROUND_COLOR, null);
         createButton.setBounds(250, 220, 120, 30);
         createButton.setForeground(Color.WHITE);
-        createButton.setBackground(BACKGROUND_COLOR);
-        createButton.setBorderPainted(false);
-        createButton.setFocusPainted(false);
+        // createButton.setBackground(BACKGROUND_COLOR);
+        // createButton.setBorderPainted(false);
+        // createButton.setFocusPainted(false);
         newNote.add(createButton);
 
         // Code adapted from stack overflow:
@@ -290,19 +285,65 @@ public class NoteApp implements ActionListener {
             notebook.addNote(note);
             JOptionPane.showMessageDialog(newNote, "Note Created!");
             newNote.dispose();
+            displayNotes();
         });
     }
 
-    // EFFECTS: handle input selecting note by mouseclick position
-    private void selectNote() {
-        String noteTitle = input.promptInput("Enter note title (or 'b' to back): ");
-        Note note = notebook.getNote(noteTitle);
-        if (note != null) {
-            editor.displayNote(note);
-        } else {
-            System.out.println("Note with the name " + noteTitle + " was not found.");
-            selectNote();
-        }
+    // EFFECTS: displays title and content of a note, prompts user for commands in
+    // the note
+    public void displayNote(Note note) {
+        JDialog noteView = new JDialog(frame, note.getTitle(), false);
+        noteView.setSize(400, 400);
+        noteView.setLayout(null);
+        noteView.getContentPane().setBackground(NOTE_COLOR);
+
+        noteView.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        noteView.setLocationRelativeTo(frame);
+        noteView.setVisible(true);
+
+        JTextArea title = new JTextArea(note.getTitle());
+        title.setLineWrap(true);
+        title.setWrapStyleWord(true);
+        title.setOpaque(false);
+        title.setForeground(Color.BLACK);
+        title.setBounds(20, 20, 400, 25);
+        noteView.add(title);
+
+        JTextArea content = new JTextArea(note.getContent());
+        content.setLineWrap(true);
+        content.setWrapStyleWord(true);
+        content.setOpaque(false);
+        content.setBackground(NOTE_COLOR);
+        content.setForeground(Color.BLACK);
+        content.setBounds(20, 60, 350, 200);
+        noteView.add(content);
+
+        noteView.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                note.setTitle(title.getText());
+                note.setContent(content.getText());
+            }
+        });
+
+        JButton deleteButton = createButton("delete note", BACKGROUND_COLOR, null);
+        deleteButton.setBounds(10, 330, 120, 30);
+        deleteButton.setForeground(NOTE_COLOR);
+        noteView.add(deleteButton);
+        
+        deleteButton.addActionListener(event -> {
+            deleteNote(note);
+            JOptionPane.showMessageDialog(noteView, "Note Deleted!");
+            noteView.dispose();
+            displayNotes();
+        });
+    }
+
+    // MODIFIES: notebook
+    // EFFFECTS: removes given note from notebook
+    private void deleteNote(Note note) {
+        notebook.deleteNote(note);
     }
 
     // EFFECTS: saves the notebook to a JSON file
@@ -322,16 +363,12 @@ public class NoteApp implements ActionListener {
         try {
             notebook = readjson.read();
             System.out.println("Loaded notebook from " + filePath);
-            editor.setNoteBook(notebook);
+            // editor.setNoteBook(notebook);
             loaded = true;
+            displayNotes();
+            // drawNoteBook();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
         }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: sets program running to false
-    private void end() {
-        running = false;
     }
 }
