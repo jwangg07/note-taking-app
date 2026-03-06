@@ -11,6 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -42,6 +46,7 @@ public class NoteApp implements ActionListener {
     private boolean saved;
     private ReadJson readjson;
     private WriteJson writejson;
+    private LinkedList<String> notifications;
 
     private JFrame frame = new JFrame("Notebook");
     private GridBagConstraints c = new GridBagConstraints();
@@ -50,6 +55,7 @@ public class NoteApp implements ActionListener {
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private final Color NOTE_COLOR = new Color(255, 235, 161);
     private JPanel workspace = new JPanel();
+    private JPanel notificationPanel = new JPanel();
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
@@ -58,6 +64,7 @@ public class NoteApp implements ActionListener {
         saved = false;
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
+        notifications = new LinkedList<String>();
 
         // GUI SETUP
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,6 +79,29 @@ public class NoteApp implements ActionListener {
 
     }
 
+    private void drawNotifications() {
+        notificationPanel.removeAll();
+
+        JLabel welcomeMessage = createLabel("Welcome to your note app!", NOTE_COLOR, 16);
+        notificationPanel.add(welcomeMessage);
+
+        if (notifications.size() > 5) {
+            notifications.removeLast();
+        }
+
+        for (int i = 0; i < notifications.size(); i++) {
+            Color notificationColor = NOTE_COLOR;
+            for (int j = 0; j < i; j++) {
+                notificationColor = notificationColor.darker();
+            }
+            JLabel notificationLabel = createLabel(notifications.get(i), notificationColor, 12);
+            notificationPanel.add(notificationLabel);
+        }
+
+        notificationPanel.revalidate();
+        notificationPanel.repaint();
+    }
+
     // EFFECTS: draws all background elements: buttons top right, notifications top
     // left
     private void drawNoteBook() {
@@ -82,26 +112,28 @@ public class NoteApp implements ActionListener {
         frame.add(workspace, c);
 
         // NOTIFICATIONS
-        JPanel notifications = new JPanel();
-        notifications.setLayout(new BoxLayout(notifications, BoxLayout.Y_AXIS));
-        notifications.setBackground(BACKGROUND_COLOR);
-        notifications.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        notificationPanel.setLayout(new BoxLayout(notificationPanel, BoxLayout.Y_AXIS));
+        notificationPanel.setBackground(BACKGROUND_COLOR);
+        notificationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel welcomeMessage = createLabel("Welcome to your note app!", NOTE_COLOR, 16);
-        notifications.add(welcomeMessage);
+        // JLabel welcomeMessage = createLabel("Welcome to your note app!", NOTE_COLOR, 16);
+        // notificationPanel.add(welcomeMessage);
 
         if (!loaded && !saved) {
-            JLabel loadAvailable = createLabel("You have a notebook saved!", NOTE_COLOR.darker(), 16);
-            notifications.add(loadAvailable);
+            // JLabel loadAvailable = createLabel("You have a notebook saved!", NOTE_COLOR.darker(), 16);
+            // notificationPanel.add(loadAvailable);
+            notifications.addFirst("You have a notebook saved!");
         }
 
         if (!compareNoteBookToFile() && (loaded || saved) ||
                 !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
             JLabel saveAvailable = createLabel("You have unsaved changes!", NOTE_COLOR.darker(), 16);
-            notifications.add(saveAvailable);
+            notificationPanel.add(saveAvailable);
         }
         setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
-        frame.add(notifications, c);
+        
+        drawNotifications();
+        frame.add(notificationPanel, c);
 
         // BUTTONS
         JPanel buttons = new JPanel();
@@ -212,7 +244,6 @@ public class NoteApp implements ActionListener {
                 displayNote(note);
             });
 
-            
             workspace.add(noteContainer);
         }
         workspace.revalidate();
@@ -334,6 +365,8 @@ public class NoteApp implements ActionListener {
             writejson.write(notebook);
             System.out.println("Saved notebook to " + filePath);
             saved = true;
+            notifications.addFirst("Saved notebook to " + filePath);
+            drawNotifications();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write notebook to file " + filePath);
         }
@@ -344,11 +377,10 @@ public class NoteApp implements ActionListener {
     private void loadNoteBook() {
         try {
             notebook = readjson.read();
-            System.out.println("Loaded notebook from " + filePath);
-            // editor.setNoteBook(notebook);
             loaded = true;
+            notifications.addFirst("Loaded notebook from " + filePath);
+            drawNotifications();
             displayNotes();
-            // drawNoteBook();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
         }
