@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
@@ -34,7 +32,7 @@ import persistance.WriteJson;
 
 // Represents the GUI of the notes application
 @ExcludeFromJacocoGeneratedReport
-public class NoteApp extends JFrame implements ActionListener {
+public class NoteApp extends JFrame {
 
     private final String filePath = "data/noteBook.json";
     private NoteBook notebook;
@@ -42,7 +40,6 @@ public class NoteApp extends JFrame implements ActionListener {
     private boolean saved;
     private ReadJson readjson;
     private WriteJson writejson;
-    // private LinkedList<String> notifications;
 
     private GridBagConstraints c = new GridBagConstraints();
     private Helpers helper = new Helpers(this);
@@ -52,6 +49,7 @@ public class NoteApp extends JFrame implements ActionListener {
     private final Color NOTE_COLOR = new Color(255, 235, 161);
     private JPanel workspace = new JPanel();
     private NotificationPanel notificationPanel = new NotificationPanel();
+    private ButtonsPanel buttonsPanel = new ButtonsPanel(this);
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
@@ -61,7 +59,6 @@ public class NoteApp extends JFrame implements ActionListener {
         saved = false;
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
-        // notifications = new LinkedList<String>();
 
         // GUI SETUP
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,28 +95,9 @@ public class NoteApp extends JFrame implements ActionListener {
         notificationPanel.drawNotifications();
         add(notificationPanel, c);
 
-        // BUTTONS
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-        buttons.setBackground(BACKGROUND_COLOR);
-
-        JButton addNoteButton = helper.createButton("Add Note", NOTE_COLOR, "addNote");
-        buttons.add(addNoteButton);
-
-        if (!loaded && !saved) {
-            JButton loadButton = helper.createButton("Load Notes", NOTE_COLOR, "loadNotes");
-            buttons.add(loadButton);
-        }
-
-        if (!compareNoteBookToFile() && (loaded || saved) ||
-                !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
-            JButton saveAvailable = helper.createButton("Save Notes", NOTE_COLOR, "saveNotes");
-            buttons.add(saveAvailable);
-        }
-
         setGridBagConstraints(1, 0, 1, GridBagConstraints.NONE, 1, 0, GridBagConstraints.FIRST_LINE_END);
-        add(buttons, c);
-
+        add(buttonsPanel, c);
+        buttonsPanel.drawButtons();
         revalidate();
         repaint();
     }
@@ -136,20 +114,9 @@ public class NoteApp extends JFrame implements ActionListener {
         c.anchor = anchor;
     }
 
-    // EFFECTS: calls methods based on user interaction
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("addNote")) {
-            createNote();
-        } else if (e.getActionCommand().equals("loadNotes")) {
-            loadNoteBook();
-        } else if (e.getActionCommand().equals("saveNotes")) {
-            saveNoteBook();
-        }
-    }
-
     // EFFECTS: returns true if the current notebook is the same as the saved JSON
     // file, false otherwise
-    private boolean compareNoteBookToFile() {
+    public boolean compareNoteBookToFile() {
         JSONObject fileJson;
         try {
             fileJson = readjson.toJsonObject();
@@ -197,7 +164,7 @@ public class NoteApp extends JFrame implements ActionListener {
 
     // EFFECTS: create a popup prompting user for title and content of the note and
     // adds note to notebook
-    private void createNote() {
+    public void createNote() {
         JDialog newNote = new JDialog(this, "Create Note", false);
         newNote.setSize(400, 300);
         newNote.setLayout(null);
@@ -300,7 +267,7 @@ public class NoteApp extends JFrame implements ActionListener {
     }
 
     // EFFECTS: saves the notebook to a JSON file
-    private void saveNoteBook() {
+    public void saveNoteBook() {
         try {
             writejson.write(notebook);
             saved = true;
@@ -313,7 +280,7 @@ public class NoteApp extends JFrame implements ActionListener {
 
     // MODIFIES: this
     // EFFECTS: loads notebook from JSON file
-    private void loadNoteBook() {
+    public void loadNoteBook() {
         try {
             notebook = readjson.read();
             loaded = true;
@@ -322,5 +289,17 @@ public class NoteApp extends JFrame implements ActionListener {
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
         }
+    }
+
+    public boolean getLoaded() {
+        return loaded;
+    }
+
+    public boolean getSaved() {
+        return saved;
+    }
+
+    public NoteBook getNoteBook() {
+        return notebook;
     }
 }

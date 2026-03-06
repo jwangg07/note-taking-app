@@ -2,23 +2,26 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
-public class Helpers implements ActionListener {
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
+
+// Represents helper methods used by various classes
+@ExcludeFromJacocoGeneratedReport
+public class Helpers {
 
     NoteApp app;
 
+    // EFFECTS: creates an instance of helper class associated to NoteApp
     public Helpers(NoteApp app) {
         this.app = app;
     }
-    // EFFECTS: calls methods based on user interaction
-    public void actionPerformed(ActionEvent e) {
-        app.actionPerformed(e);
+
+    // EFFECTS: creates an instance of helper class
+    public Helpers() {
     }
 
     // EFFECTS: Creates a JLabel based on given parameters and returns it
@@ -36,7 +39,6 @@ public class Helpers implements ActionListener {
         button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setActionCommand(command);
-        button.addActionListener(this);
         return button;
     }
 
@@ -49,5 +51,7 @@ public class Helpers implements ActionListener {
         textArea.setForeground(textColor);
         return textArea;
     }
+
     
+
 }
