@@ -7,14 +7,8 @@ import java.awt.GridBagLayout;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import org.json.JSONObject;
 
@@ -45,7 +39,8 @@ public class NoteApp extends JFrame {
     private NotificationPanel notificationPanel = new NotificationPanel();
     private ButtonsPanel buttonsPanel = new ButtonsPanel(this);
     private WorkspacePanel workspacePanel = new WorkspacePanel(this);
-    private NoteEditor noteEditor = new NoteEditor(this, notificationPanel, workspacePanel);
+    private NoteWindow noteWindow = new NoteWindow(this, notificationPanel, workspacePanel);
+    private CreateNoteWindow createNoteWindow = new CreateNoteWindow(this, notificationPanel, workspacePanel);
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
@@ -66,10 +61,6 @@ public class NoteApp extends JFrame {
         setVisible(true);
         setResizable(false);
         drawNoteBook();
-    }
-
-    public void displayNote(Note note) {
-        noteEditor.displayNote(note);
     }
 
     // EFFECTS: draws all background elements: buttons top right, notifications top
@@ -124,58 +115,6 @@ public class NoteApp extends JFrame {
         return false;
     }
 
-    // EFFECTS: create a popup prompting user for title and content of the note and
-    // adds note to notebook
-    public void createNote() {
-        JDialog newNote = new JDialog(this, "Create Note", false);
-        newNote.setSize(400, 300);
-        newNote.setLayout(null);
-        newNote.getContentPane().setBackground(NOTE_COLOR);
-
-        newNote.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-        newNote.setLocationRelativeTo(this);
-        newNote.setVisible(true);
-
-        JLabel titleLabel = helper.createLabel("Title:", Color.BLACK, 12);
-        titleLabel.setBounds(20, 20, 50, 25);
-        newNote.add(titleLabel);
-
-        JTextField titleField = new JTextField();
-        titleField.setBackground(NOTE_COLOR);
-        titleField.setBounds(80, 20, 290, 25);
-        titleField.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
-        newNote.add(titleField);
-
-        JLabel contentLabel = helper.createLabel("Content:", Color.black, 12);
-        contentLabel.setBounds(20, 60, 60, 25);
-        newNote.add(contentLabel);
-
-        JTextArea contentTextArea = helper.createTextArea("", Color.BLACK, NOTE_COLOR);
-        contentTextArea.setBounds(20, 90, 350, 120);
-        contentTextArea.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
-        newNote.add(contentTextArea);
-
-        JButton createButton = helper.createButton("Create Note", BACKGROUND_COLOR, null);
-        createButton.setBounds(250, 220, 120, 30);
-        createButton.setForeground(Color.WHITE);
-        newNote.add(createButton);
-
-        // Code adapted from stack overflow:
-        // https://stackoverflow.com/questions/62093192/java-dynamically-create-buttons-and-pass-a-parameter-to-action-performed#:~:text=For%20Swing%2C%20you'd%20need,link%20CC%20BY%2DSA%204.0
-        createButton.addActionListener(event -> {
-            String title = titleField.getText();
-            String content = contentTextArea.getText();
-            Note note = new Note(title);
-            note.setContent(content);
-            notebook.addNote(note);
-            JOptionPane.showMessageDialog(newNote, "Note Created!");
-            notificationPanel.createNotification("Note \'" + title + "\' Created!");
-            newNote.dispose();
-            workspacePanel.displayNotes();
-        });
-    }
-
     // MODIFIES: notebook
     // EFFFECTS: removes given note from notebook
     public void deleteNote(Note note) {
@@ -217,5 +156,13 @@ public class NoteApp extends JFrame {
 
     public NoteBook getNoteBook() {
         return notebook;
+    }
+
+    public void displayNote(Note note) {
+        noteWindow.displayNote(note);
+    }
+
+    public void createNote() {
+        createNoteWindow.createNote();
     }
 }

@@ -14,7 +14,7 @@ import model.Note;
 
 // Represents the GUI for an individual Note viewer and editor
 @ExcludeFromJacocoGeneratedReport
-public class NoteEditor extends JDialog {
+public class NoteWindow extends JDialog {
 
     NoteApp app;
     NotificationPanel notificationPanel;
@@ -24,7 +24,7 @@ public class NoteEditor extends JDialog {
     private final Color NOTE_COLOR = new Color(255, 235, 161);
 
     // Creates a new window connecting to NoteApp, NotificationPanel, and WorkspacePanel
-    public NoteEditor(NoteApp app, NotificationPanel notificationPanel, WorkspacePanel workspacePanel) {
+    public NoteWindow(NoteApp app, NotificationPanel notificationPanel, WorkspacePanel workspacePanel) {
         this.app = app;
         this.notificationPanel = notificationPanel;
         this.workspacePanel = workspacePanel;
