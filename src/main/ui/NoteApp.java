@@ -1,9 +1,7 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.WindowAdapter;
@@ -17,10 +15,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import org.json.JSONObject;
 
@@ -47,9 +43,10 @@ public class NoteApp extends JFrame {
     private final int HEIGHT = 900;
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private final Color NOTE_COLOR = new Color(255, 235, 161);
-    private JPanel workspace = new JPanel();
+
     private NotificationPanel notificationPanel = new NotificationPanel();
     private ButtonsPanel buttonsPanel = new ButtonsPanel(this);
+    private WorkspacePanel workspacePanel = new WorkspacePanel(this);
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
@@ -75,11 +72,8 @@ public class NoteApp extends JFrame {
     // EFFECTS: draws all background elements: buttons top right, notifications top
     // left
     private void drawNoteBook() {
-        workspace.setBackground(BACKGROUND_COLOR);
-        workspace.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
-        workspace.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         setGridBagConstraints(0, 1, 2, GridBagConstraints.BOTH, 1, 1, GridBagConstraints.CENTER);
-        add(workspace, c);
+        add(workspacePanel, c);
 
         if (!loaded && !saved) {
             notificationPanel.createNotification("You have a notebook saved!");
@@ -125,41 +119,6 @@ public class NoteApp extends JFrame {
             System.out.println("Failed to read file: " + filePath);
         }
         return false;
-    }
-
-    // EFFECTS: displays each note in notebook as a box with title and content
-    private void displayNotes() {
-        workspace.removeAll();
-        for (Note note : notebook.getAllNotes()) {
-            JPanel noteContainer = new JPanel();
-            noteContainer.setLayout(null);
-            noteContainer.setPreferredSize(new Dimension(200, 200));
-            noteContainer.setBackground(NOTE_COLOR);
-
-            JLabel title = helper.createLabel(note.getTitle(), Color.BLACK, 18);
-            title.setBounds(10, 10, 180, 20);
-            noteContainer.add(title);
-
-            // Code adapted from Stack Overflow:
-            // https://stackoverflow.com/questions/2420742/make-a-jlabel-wrap-its-text-by-setting-a-max-width#:~:text=see%20also%20stackoverflow.com/questions,%22%22);
-            JLabel content = helper.createLabel("<html>" + note.getContent() + "</html>", Color.BLACK, 12);
-            content.setBounds(10, 40, 180, 150);
-            content.setVerticalAlignment(SwingConstants.TOP);
-            noteContainer.add(content);
-
-            JButton openNoteButton = helper.createButton("", null, null);
-            openNoteButton.setBounds(0, 0, 200, 200);
-            openNoteButton.setOpaque(false);
-            noteContainer.add(openNoteButton);
-
-            openNoteButton.addActionListener(event -> {
-                displayNote(note);
-            });
-
-            workspace.add(noteContainer);
-        }
-        workspace.revalidate();
-        workspace.repaint();
     }
 
     // EFFECTS: create a popup prompting user for title and content of the note and
@@ -210,7 +169,7 @@ public class NoteApp extends JFrame {
             JOptionPane.showMessageDialog(newNote, "Note Created!");
             notificationPanel.createNotification("Note \'" + title + "\' Created!");
             newNote.dispose();
-            displayNotes();
+            workspacePanel.displayNotes();
         });
     }
 
@@ -242,7 +201,7 @@ public class NoteApp extends JFrame {
             public void windowClosed(WindowEvent e) {
                 note.setTitle(title.getText());
                 note.setContent(content.getText());
-                displayNotes();
+                workspacePanel.displayNotes();
             }
         });
 
@@ -256,7 +215,7 @@ public class NoteApp extends JFrame {
             JOptionPane.showMessageDialog(noteView, "Note Deleted!");
             notificationPanel.createNotification("Note \'" + note.getTitle() + "\' Deleted!");
             noteView.dispose();
-            displayNotes();
+            workspacePanel.displayNotes();
         });
     }
 
@@ -285,7 +244,7 @@ public class NoteApp extends JFrame {
             notebook = readjson.read();
             loaded = true;
             notificationPanel.createNotification("Loaded notebook from " + filePath);
-            displayNotes();
+            workspacePanel.displayNotes();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
         }
