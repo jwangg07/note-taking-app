@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -13,10 +12,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -45,7 +42,7 @@ public class NoteApp extends JFrame implements ActionListener {
     private boolean saved;
     private ReadJson readjson;
     private WriteJson writejson;
-    private LinkedList<String> notifications;
+    // private LinkedList<String> notifications;
 
     private GridBagConstraints c = new GridBagConstraints();
     private Helpers helper = new Helpers(this);
@@ -54,7 +51,7 @@ public class NoteApp extends JFrame implements ActionListener {
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private final Color NOTE_COLOR = new Color(255, 235, 161);
     private JPanel workspace = new JPanel();
-    private JPanel notificationPanel = new JPanel();
+    private NotificationPanel notificationPanel = new NotificationPanel();
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
@@ -64,7 +61,7 @@ public class NoteApp extends JFrame implements ActionListener {
         saved = false;
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
-        notifications = new LinkedList<String>();
+        // notifications = new LinkedList<String>();
 
         // GUI SETUP
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,29 +75,6 @@ public class NoteApp extends JFrame implements ActionListener {
         drawNoteBook();
     }
 
-    private void drawNotifications() {
-        notificationPanel.removeAll();
-
-        JLabel welcomeMessage = helper.createLabel("Welcome to your note app!", NOTE_COLOR, 16);
-        notificationPanel.add(welcomeMessage);
-
-        if (notifications.size() > 5) {
-            notifications.removeLast();
-        }
-
-        for (int i = 0; i < notifications.size(); i++) {
-            Color notificationColor = NOTE_COLOR;
-            for (int j = 0; j < i; j++) {
-                notificationColor = notificationColor.darker();
-            }
-            JLabel notificationLabel = helper.createLabel(notifications.get(i), notificationColor, 12);
-            notificationPanel.add(notificationLabel);
-        }
-
-        notificationPanel.revalidate();
-        notificationPanel.repaint();
-    }
-
     // EFFECTS: draws all background elements: buttons top right, notifications top
     // left
     private void drawNoteBook() {
@@ -110,13 +84,8 @@ public class NoteApp extends JFrame implements ActionListener {
         setGridBagConstraints(0, 1, 2, GridBagConstraints.BOTH, 1, 1, GridBagConstraints.CENTER);
         add(workspace, c);
 
-        // NOTIFICATIONS
-        notificationPanel.setLayout(new BoxLayout(notificationPanel, BoxLayout.Y_AXIS));
-        notificationPanel.setBackground(BACKGROUND_COLOR);
-        notificationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
         if (!loaded && !saved) {
-            notifications.addFirst("You have a notebook saved!");
+            notificationPanel.createNotification("You have a notebook saved!");
         }
 
         if (!compareNoteBookToFile() && (loaded || saved) ||
@@ -126,7 +95,7 @@ public class NoteApp extends JFrame implements ActionListener {
         }
         setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
 
-        drawNotifications();
+        notificationPanel.drawNotifications();
         add(notificationPanel, c);
 
         // BUTTONS
@@ -272,7 +241,7 @@ public class NoteApp extends JFrame implements ActionListener {
             note.setContent(content);
             notebook.addNote(note);
             JOptionPane.showMessageDialog(newNote, "Note Created!");
-            createNotification("Note \'" + title + "\' Created!");
+            notificationPanel.createNotification("Note \'" + title + "\' Created!");
             newNote.dispose();
             displayNotes();
         });
@@ -318,17 +287,10 @@ public class NoteApp extends JFrame implements ActionListener {
         deleteButton.addActionListener(event -> {
             deleteNote(note);
             JOptionPane.showMessageDialog(noteView, "Note Deleted!");
-            createNotification("Note \'" + note.getTitle() + "\' Deleted!");
+            notificationPanel.createNotification("Note \'" + note.getTitle() + "\' Deleted!");
             noteView.dispose();
             displayNotes();
         });
-    }
-
-    // MODIFIES: this
-    // EFFECTS: adds a notification to notifications and draws notification panel
-    private void createNotification(String message) {
-        notifications.addFirst(message);
-        drawNotifications();
     }
 
     // MODIFIES: notebook
@@ -343,7 +305,7 @@ public class NoteApp extends JFrame implements ActionListener {
             writejson.write(notebook);
             saved = true;
             System.out.println("Saved notebook to " + filePath);
-            createNotification("Saved notebook to " + filePath);
+            notificationPanel.createNotification("Saved notebook to " + filePath);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write notebook to file " + filePath);
         }
@@ -355,7 +317,7 @@ public class NoteApp extends JFrame implements ActionListener {
         try {
             notebook = readjson.read();
             loaded = true;
-            createNotification("Loaded notebook from " + filePath);
+            notificationPanel.createNotification("Loaded notebook from " + filePath);
             displayNotes();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
