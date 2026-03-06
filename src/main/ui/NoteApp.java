@@ -37,7 +37,7 @@ import persistance.WriteJson;
 
 // Represents the GUI of the notes application
 @ExcludeFromJacocoGeneratedReport
-public class NoteApp implements ActionListener {
+public class NoteApp extends JFrame implements ActionListener {
 
     private final String filePath = "data/noteBook.json";
     private NoteBook notebook;
@@ -47,7 +47,6 @@ public class NoteApp implements ActionListener {
     private WriteJson writejson;
     private LinkedList<String> notifications;
 
-    private JFrame frame = new JFrame("Notebook");
     private GridBagConstraints c = new GridBagConstraints();
     private final int WIDTH = 1200;
     private final int HEIGHT = 900;
@@ -58,6 +57,7 @@ public class NoteApp implements ActionListener {
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
+        super("Notebook");
         notebook = new NoteBook();
         loaded = false;
         saved = false;
@@ -66,14 +66,14 @@ public class NoteApp implements ActionListener {
         notifications = new LinkedList<String>();
 
         // GUI SETUP
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        frame.getContentPane().setBackground(BACKGROUND_COLOR);
-        frame.setLayout(new GridBagLayout());
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        frame.setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        getContentPane().setBackground(BACKGROUND_COLOR);
+        setLayout(new GridBagLayout());
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
         drawNoteBook();
 
     }
@@ -108,21 +108,14 @@ public class NoteApp implements ActionListener {
         workspace.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
         workspace.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         setGridBagConstraints(0, 1, 2, GridBagConstraints.BOTH, 1, 1, GridBagConstraints.CENTER);
-        frame.add(workspace, c);
+        add(workspace, c);
 
         // NOTIFICATIONS
         notificationPanel.setLayout(new BoxLayout(notificationPanel, BoxLayout.Y_AXIS));
         notificationPanel.setBackground(BACKGROUND_COLOR);
         notificationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // JLabel welcomeMessage = createLabel("Welcome to your note app!", NOTE_COLOR,
-        // 16);
-        // notificationPanel.add(welcomeMessage);
-
         if (!loaded && !saved) {
-            // JLabel loadAvailable = createLabel("You have a notebook saved!",
-            // NOTE_COLOR.darker(), 16);
-            // notificationPanel.add(loadAvailable);
             notifications.addFirst("You have a notebook saved!");
         }
 
@@ -134,7 +127,7 @@ public class NoteApp implements ActionListener {
         setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
 
         drawNotifications();
-        frame.add(notificationPanel, c);
+        add(notificationPanel, c);
 
         // BUTTONS
         JPanel buttons = new JPanel();
@@ -156,10 +149,10 @@ public class NoteApp implements ActionListener {
         }
 
         setGridBagConstraints(1, 0, 1, GridBagConstraints.NONE, 1, 0, GridBagConstraints.FIRST_LINE_END);
-        frame.add(buttons, c);
+        add(buttons, c);
 
-        frame.revalidate();
-        frame.repaint();
+        revalidate();
+        repaint();
     }
 
     // EFFECTS: Modifies GridBagConstraints based on parameters
@@ -255,14 +248,14 @@ public class NoteApp implements ActionListener {
     // EFFECTS: create a popup prompting user for title and content of the note and
     // adds note to notebook
     private void createNote() {
-        JDialog newNote = new JDialog(frame, "Create Note", false);
+        JDialog newNote = new JDialog(this, "Create Note", false);
         newNote.setSize(400, 300);
         newNote.setLayout(null);
         newNote.getContentPane().setBackground(NOTE_COLOR);
 
         newNote.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        newNote.setLocationRelativeTo(frame);
+        newNote.setLocationRelativeTo(this);
         newNote.setVisible(true);
 
         JLabel titleLabel = createLabel("Title:", Color.BLACK, 12);
@@ -317,14 +310,14 @@ public class NoteApp implements ActionListener {
     // EFFECTS: displays title and content of a note, prompts user for commands in
     // the note
     public void displayNote(Note note) {
-        JDialog noteView = new JDialog(frame, note.getTitle(), false);
+        JDialog noteView = new JDialog(this, note.getTitle(), false);
         noteView.setSize(400, 400);
         noteView.setLayout(null);
         noteView.getContentPane().setBackground(NOTE_COLOR);
 
         noteView.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        noteView.setLocationRelativeTo(frame);
+        noteView.setLocationRelativeTo(this);
         noteView.setVisible(true);
 
         JTextArea title = createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR);
