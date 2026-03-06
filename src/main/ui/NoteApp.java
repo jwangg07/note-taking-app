@@ -9,6 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -333,11 +335,14 @@ public class NoteApp implements ActionListener {
         content.setBounds(20, 60, 350, 200);
         noteView.add(content);
 
-        noteView.addWindowListener(new java.awt.event.WindowAdapter() {
+        // Code Adapted from Stack Overflow:
+        //  https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
+        noteView.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(java.awt.event.WindowEvent e) {
+            public void windowClosed(WindowEvent e) {
                 note.setTitle(title.getText());
                 note.setContent(content.getText());
+                displayNotes();
             }
         });
 
@@ -348,7 +353,7 @@ public class NoteApp implements ActionListener {
 
         deleteButton.addActionListener(event -> {
             deleteNote(note);
-            JOptionPane.showMessageDialog(noteView, "Note Dleted!");
+            JOptionPane.showMessageDialog(noteView, "Note Deleted!");
             createNotification("Note \'" + note.getTitle() + "\' Deleted!");
             noteView.dispose();
             displayNotes();
