@@ -45,10 +45,10 @@ public class Helpers {
     // EFFECTS: Creates a JTextArea based on parameters and returns it
     public JTextArea createTextArea(String text, Color textColor, Color bgColor) {
         JTextArea textArea = new JTextArea(text);
+        textArea.setForeground(textColor);
+        textArea.setBackground(bgColor);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setOpaque(false);
-        textArea.setForeground(textColor);
         return textArea;
     }
 

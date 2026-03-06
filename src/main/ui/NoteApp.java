@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -47,6 +45,7 @@ public class NoteApp extends JFrame {
     private NotificationPanel notificationPanel = new NotificationPanel();
     private ButtonsPanel buttonsPanel = new ButtonsPanel(this);
     private WorkspacePanel workspacePanel = new WorkspacePanel(this);
+    private NoteEditor noteEditor = new NoteEditor(this, notificationPanel, workspacePanel);
 
     // EFFECTS: Initializes the application with new notebook and input handler
     public NoteApp() {
@@ -67,6 +66,10 @@ public class NoteApp extends JFrame {
         setVisible(true);
         setResizable(false);
         drawNoteBook();
+    }
+
+    public void displayNote(Note note) {
+        noteEditor.displayNote(note);
     }
 
     // EFFECTS: draws all background elements: buttons top right, notifications top
@@ -173,55 +176,9 @@ public class NoteApp extends JFrame {
         });
     }
 
-    // EFFECTS: displays title and content of a note, prompts user for commands in
-    // the note
-    public void displayNote(Note note) {
-        JDialog noteView = new JDialog(this, note.getTitle(), false);
-        noteView.setSize(400, 400);
-        noteView.setLayout(null);
-        noteView.getContentPane().setBackground(NOTE_COLOR);
-
-        noteView.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-        noteView.setLocationRelativeTo(this);
-        noteView.setVisible(true);
-
-        JTextArea title = helper.createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR);
-        title.setBounds(20, 20, 400, 25);
-        noteView.add(title);
-
-        JTextArea content = helper.createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR);
-        content.setBounds(20, 60, 350, 200);
-        noteView.add(content);
-
-        // Code Adapted from Stack Overflow:
-        // https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
-        noteView.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                note.setTitle(title.getText());
-                note.setContent(content.getText());
-                workspacePanel.displayNotes();
-            }
-        });
-
-        JButton deleteButton = helper.createButton("delete note", BACKGROUND_COLOR, null);
-        deleteButton.setBounds(10, 330, 120, 30);
-        deleteButton.setForeground(NOTE_COLOR);
-        noteView.add(deleteButton);
-
-        deleteButton.addActionListener(event -> {
-            deleteNote(note);
-            JOptionPane.showMessageDialog(noteView, "Note Deleted!");
-            notificationPanel.createNotification("Note \'" + note.getTitle() + "\' Deleted!");
-            noteView.dispose();
-            workspacePanel.displayNotes();
-        });
-    }
-
     // MODIFIES: notebook
     // EFFFECTS: removes given note from notebook
-    private void deleteNote(Note note) {
+    public void deleteNote(Note note) {
         notebook.deleteNote(note);
     }
 
