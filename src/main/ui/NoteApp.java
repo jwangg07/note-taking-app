@@ -48,6 +48,7 @@ public class NoteApp extends JFrame implements ActionListener {
     private LinkedList<String> notifications;
 
     private GridBagConstraints c = new GridBagConstraints();
+    private Helpers helper = new Helpers(this);
     private final int WIDTH = 1200;
     private final int HEIGHT = 900;
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
@@ -75,13 +76,12 @@ public class NoteApp extends JFrame implements ActionListener {
         setVisible(true);
         setResizable(false);
         drawNoteBook();
-
     }
 
     private void drawNotifications() {
         notificationPanel.removeAll();
 
-        JLabel welcomeMessage = createLabel("Welcome to your note app!", NOTE_COLOR, 16);
+        JLabel welcomeMessage = helper.createLabel("Welcome to your note app!", NOTE_COLOR, 16);
         notificationPanel.add(welcomeMessage);
 
         if (notifications.size() > 5) {
@@ -93,7 +93,7 @@ public class NoteApp extends JFrame implements ActionListener {
             for (int j = 0; j < i; j++) {
                 notificationColor = notificationColor.darker();
             }
-            JLabel notificationLabel = createLabel(notifications.get(i), notificationColor, 12);
+            JLabel notificationLabel = helper.createLabel(notifications.get(i), notificationColor, 12);
             notificationPanel.add(notificationLabel);
         }
 
@@ -121,7 +121,7 @@ public class NoteApp extends JFrame implements ActionListener {
 
         if (!compareNoteBookToFile() && (loaded || saved) ||
                 !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
-            JLabel saveAvailable = createLabel("You have unsaved changes!", NOTE_COLOR.darker(), 16);
+            JLabel saveAvailable = helper.createLabel("You have unsaved changes!", NOTE_COLOR.darker(), 16);
             notificationPanel.add(saveAvailable);
         }
         setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
@@ -134,17 +134,17 @@ public class NoteApp extends JFrame implements ActionListener {
         buttons.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         buttons.setBackground(BACKGROUND_COLOR);
 
-        JButton addNoteButton = createButton("Add Note", NOTE_COLOR, "addNote");
+        JButton addNoteButton = helper.createButton("Add Note", NOTE_COLOR, "addNote");
         buttons.add(addNoteButton);
 
         if (!loaded && !saved) {
-            JButton loadButton = createButton("Load Notes", NOTE_COLOR, "loadNotes");
+            JButton loadButton = helper.createButton("Load Notes", NOTE_COLOR, "loadNotes");
             buttons.add(loadButton);
         }
 
         if (!compareNoteBookToFile() && (loaded || saved) ||
                 !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
-            JButton saveAvailable = createButton("Save Notes", NOTE_COLOR, "saveNotes");
+            JButton saveAvailable = helper.createButton("Save Notes", NOTE_COLOR, "saveNotes");
             buttons.add(saveAvailable);
         }
 
@@ -165,25 +165,6 @@ public class NoteApp extends JFrame implements ActionListener {
         c.weightx = weightX;
         c.weighty = weightY;
         c.anchor = anchor;
-    }
-
-    // EFFECTS: Creates a JLabel based on given parameters and returns it
-    private JLabel createLabel(String text, Color textColor, int textSize) {
-        JLabel label = new JLabel(text);
-        label.setForeground(textColor);
-        label.setFont(new Font("Default", Font.PLAIN, textSize));
-        return label;
-    }
-
-    // EFFECTS: creates a JButton based on the given parameters and returns it
-    private JButton createButton(String text, Color bgColor, String command) {
-        JButton button = new JButton(text);
-        button.setBackground(bgColor);
-        button.setBorderPainted(false);
-        button.setFocusPainted(false);
-        button.setActionCommand(command);
-        button.addActionListener(this);
-        return button;
     }
 
     // EFFECTS: calls methods based on user interaction
@@ -219,18 +200,18 @@ public class NoteApp extends JFrame implements ActionListener {
             noteContainer.setPreferredSize(new Dimension(200, 200));
             noteContainer.setBackground(NOTE_COLOR);
 
-            JLabel title = createLabel(note.getTitle(), Color.BLACK, 18);
+            JLabel title = helper.createLabel(note.getTitle(), Color.BLACK, 18);
             title.setBounds(10, 10, 180, 20);
             noteContainer.add(title);
 
             // Code adapted from Stack Overflow:
             // https://stackoverflow.com/questions/2420742/make-a-jlabel-wrap-its-text-by-setting-a-max-width#:~:text=see%20also%20stackoverflow.com/questions,%22%22);
-            JLabel content = createLabel("<html>" + note.getContent() + "</html>", Color.BLACK, 12);
+            JLabel content = helper.createLabel("<html>" + note.getContent() + "</html>", Color.BLACK, 12);
             content.setBounds(10, 40, 180, 150);
             content.setVerticalAlignment(SwingConstants.TOP);
             noteContainer.add(content);
 
-            JButton openNoteButton = createButton("", null, null);
+            JButton openNoteButton = helper.createButton("", null, null);
             openNoteButton.setBounds(0, 0, 200, 200);
             openNoteButton.setOpaque(false);
             noteContainer.add(openNoteButton);
@@ -258,7 +239,7 @@ public class NoteApp extends JFrame implements ActionListener {
         newNote.setLocationRelativeTo(this);
         newNote.setVisible(true);
 
-        JLabel titleLabel = createLabel("Title:", Color.BLACK, 12);
+        JLabel titleLabel = helper.createLabel("Title:", Color.BLACK, 12);
         titleLabel.setBounds(20, 20, 50, 25);
         newNote.add(titleLabel);
 
@@ -268,16 +249,16 @@ public class NoteApp extends JFrame implements ActionListener {
         titleField.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
         newNote.add(titleField);
 
-        JLabel contentLabel = createLabel("Content:", Color.black, 12);
+        JLabel contentLabel = helper.createLabel("Content:", Color.black, 12);
         contentLabel.setBounds(20, 60, 60, 25);
         newNote.add(contentLabel);
 
-        JTextArea contentTextArea = createTextArea("", Color.BLACK, NOTE_COLOR);
+        JTextArea contentTextArea = helper.createTextArea("", Color.BLACK, NOTE_COLOR);
         contentTextArea.setBounds(20, 90, 350, 120);
         contentTextArea.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
         newNote.add(contentTextArea);
 
-        JButton createButton = createButton("Create Note", BACKGROUND_COLOR, null);
+        JButton createButton = helper.createButton("Create Note", BACKGROUND_COLOR, null);
         createButton.setBounds(250, 220, 120, 30);
         createButton.setForeground(Color.WHITE);
         newNote.add(createButton);
@@ -297,16 +278,6 @@ public class NoteApp extends JFrame implements ActionListener {
         });
     }
 
-    // EFFECTS: Creates a JTextArea based on parameters and returns it
-    private JTextArea createTextArea(String text, Color textColor, Color bgColor) {
-        JTextArea textArea = new JTextArea(text);
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
-        textArea.setOpaque(false);
-        textArea.setForeground(textColor);
-        return textArea;
-    }
-
     // EFFECTS: displays title and content of a note, prompts user for commands in
     // the note
     public void displayNote(Note note) {
@@ -320,16 +291,16 @@ public class NoteApp extends JFrame implements ActionListener {
         noteView.setLocationRelativeTo(this);
         noteView.setVisible(true);
 
-        JTextArea title = createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR);
+        JTextArea title = helper.createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR);
         title.setBounds(20, 20, 400, 25);
         noteView.add(title);
 
-        JTextArea content = createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR);
+        JTextArea content = helper.createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR);
         content.setBounds(20, 60, 350, 200);
         noteView.add(content);
 
         // Code Adapted from Stack Overflow:
-        //  https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
+        // https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
         noteView.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
@@ -339,7 +310,7 @@ public class NoteApp extends JFrame implements ActionListener {
             }
         });
 
-        JButton deleteButton = createButton("delete note", BACKGROUND_COLOR, null);
+        JButton deleteButton = helper.createButton("delete note", BACKGROUND_COLOR, null);
         deleteButton.setBounds(10, 330, 120, 30);
         deleteButton.setForeground(NOTE_COLOR);
         noteView.add(deleteButton);
