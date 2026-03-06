@@ -11,10 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
 import java.util.LinkedList;
-import java.util.Queue;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -116,11 +113,13 @@ public class NoteApp implements ActionListener {
         notificationPanel.setBackground(BACKGROUND_COLOR);
         notificationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // JLabel welcomeMessage = createLabel("Welcome to your note app!", NOTE_COLOR, 16);
+        // JLabel welcomeMessage = createLabel("Welcome to your note app!", NOTE_COLOR,
+        // 16);
         // notificationPanel.add(welcomeMessage);
 
         if (!loaded && !saved) {
-            // JLabel loadAvailable = createLabel("You have a notebook saved!", NOTE_COLOR.darker(), 16);
+            // JLabel loadAvailable = createLabel("You have a notebook saved!",
+            // NOTE_COLOR.darker(), 16);
             // notificationPanel.add(loadAvailable);
             notifications.addFirst("You have a notebook saved!");
         }
@@ -131,7 +130,7 @@ public class NoteApp implements ActionListener {
             notificationPanel.add(saveAvailable);
         }
         setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
-        
+
         drawNotifications();
         frame.add(notificationPanel, c);
 
@@ -162,7 +161,8 @@ public class NoteApp implements ActionListener {
     }
 
     // EFFECTS: Modifies GridBagConstraints based on parameters
-    private void setGridBagConstraints(int beginX, int beginY, int widthSpan, int fill, int weightX, int weightY, int anchor) {
+    private void setGridBagConstraints(int beginX, int beginY, int widthSpan, int fill, int weightX, int weightY,
+            int anchor) {
         c.gridx = beginX;
         c.gridy = beginY;
         c.gridwidth = widthSpan;
@@ -234,7 +234,7 @@ public class NoteApp implements ActionListener {
             content.setBounds(10, 40, 180, 150);
             content.setVerticalAlignment(SwingConstants.TOP);
             noteContainer.add(content);
-            
+
             JButton openNoteButton = createButton("", null, null);
             openNoteButton.setBounds(0, 0, 200, 200);
             openNoteButton.setOpaque(false);
@@ -296,6 +296,7 @@ public class NoteApp implements ActionListener {
             note.setContent(content);
             notebook.addNote(note);
             JOptionPane.showMessageDialog(newNote, "Note Created!");
+            createNotification("Note \'" + title + "\' Created!");
             newNote.dispose();
             displayNotes();
         });
@@ -309,7 +310,7 @@ public class NoteApp implements ActionListener {
         textArea.setOpaque(false);
         textArea.setForeground(textColor);
         return textArea;
-    } 
+    }
 
     // EFFECTS: displays title and content of a note, prompts user for commands in
     // the note
@@ -344,13 +345,21 @@ public class NoteApp implements ActionListener {
         deleteButton.setBounds(10, 330, 120, 30);
         deleteButton.setForeground(NOTE_COLOR);
         noteView.add(deleteButton);
-        
+
         deleteButton.addActionListener(event -> {
             deleteNote(note);
-            JOptionPane.showMessageDialog(noteView, "Note Deleted!");
+            JOptionPane.showMessageDialog(noteView, "Note Dleted!");
+            createNotification("Note \'" + note.getTitle() + "\' Deleted!");
             noteView.dispose();
             displayNotes();
         });
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds a notification to notifications and draws notification panel
+    private void createNotification(String message) {
+        notifications.addFirst(message);
+        drawNotifications();
     }
 
     // MODIFIES: notebook
@@ -363,10 +372,9 @@ public class NoteApp implements ActionListener {
     private void saveNoteBook() {
         try {
             writejson.write(notebook);
-            System.out.println("Saved notebook to " + filePath);
             saved = true;
-            notifications.addFirst("Saved notebook to " + filePath);
-            drawNotifications();
+            System.out.println("Saved notebook to " + filePath);
+            createNotification("Saved notebook to " + filePath);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write notebook to file " + filePath);
         }
@@ -378,8 +386,7 @@ public class NoteApp implements ActionListener {
         try {
             notebook = readjson.read();
             loaded = true;
-            notifications.addFirst("Loaded notebook from " + filePath);
-            drawNotifications();
+            createNotification("Loaded notebook from " + filePath);
             displayNotes();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
