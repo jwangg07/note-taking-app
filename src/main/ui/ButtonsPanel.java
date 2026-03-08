@@ -21,6 +21,8 @@ public class ButtonsPanel extends JPanel implements ActionListener {
     private boolean loaded;
     private boolean saved;
 
+    // EFFECTS: Creates a buttons panel associated to NoteApp, with default panel
+    // settings
     public ButtonsPanel(NoteApp app) {
         this.app = app;
         loaded = app.getLoaded();
@@ -29,6 +31,11 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         setBackground(BACKGROUND_COLOR);
     }
 
+    // EFFECTS: Creates buttons and adds to panel,
+    // If user has not loaded or saved, the user may load in notes,
+    // If user has either loaded or saved, and has made a change, they may save the
+    // note
+    // If user has made a note without loading, the user may save the note
     public void drawButtons() {
         JButton addNoteButton = helper.createButton("Add Note", NOTE_COLOR, "addNote");
         addNoteButton.addActionListener(this);
@@ -48,7 +55,8 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         }
     }
 
-    // EFFECTS: calls methods based on user interaction
+    // EFFECTS: calls respective methods to NoteApp based on user button press
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("addNote")) {
             app.createNote();
