@@ -17,24 +17,15 @@ import model.Note;
 public class NoteWindow extends JDialog {
 
     NoteApp app;
-    NotificationPanel notificationPanel;
-    WorkspacePanel workspacePanel;
     private Helpers helper = new Helpers();
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private final Color NOTE_COLOR = new Color(255, 235, 161);
 
-    // Creates a new window connecting to NoteApp, NotificationPanel, and WorkspacePanel
-    public NoteWindow(NoteApp app, NotificationPanel notificationPanel, WorkspacePanel workspacePanel) {
+    // Creates a new window connecting to NoteApp, NotificationPanel, and
+    // WorkspacePanel
+    public NoteWindow(NoteApp app, Note note) {
+        super(app, note.getTitle(), false);
         this.app = app;
-        this.notificationPanel = notificationPanel;
-        this.workspacePanel = workspacePanel;
-    }
-
-    // EFFECTS: displays title and content of a note, the user can edit title and
-    // content, updating the note when closed.
-    // User can also press the delete button to delete the note
-    public void displayNote(Note note) {
-        // JDialog noteView = new JDialog(this, note.getTitle(), false);
         setSize(400, 400);
         setLayout(null);
         getContentPane().setBackground(NOTE_COLOR);
@@ -43,7 +34,12 @@ public class NoteWindow extends JDialog {
 
         setLocationRelativeTo(this);
         setVisible(true);
+    }
 
+    // EFFECTS: displays title and content of a note, the user can edit title and
+    // content, updating the note when closed.
+    // User can also press the delete button to delete the note
+    public void displayNote(Note note) {
         JTextArea title = helper.createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR);
         title.setBounds(20, 20, 400, 25);
         add(title);
@@ -59,7 +55,7 @@ public class NoteWindow extends JDialog {
             public void windowClosed(WindowEvent e) {
                 note.setTitle(title.getText());
                 note.setContent(content.getText());
-                workspacePanel.displayNotes();
+                app.getWorkspacePanel().displayNotes();
             }
         });
 
@@ -69,11 +65,23 @@ public class NoteWindow extends JDialog {
         add(deleteButton);
 
         deleteButton.addActionListener(event -> {
-            app.deleteNote(note);
+            app.getNotificationPanel().createNotification("Note \'" + note.getTitle() + "\' Deleted!");
+            app.getNoteBook().deleteNote(note);
             JOptionPane.showMessageDialog(this, "Note Deleted!");
-            notificationPanel.createNotification("Note \'" + note.getTitle() + "\' Deleted!");
             dispose();
-            workspacePanel.displayNotes();
+            app.getWorkspacePanel().displayNotes();
         });
+    }
+
+    // MODIFIES: note
+    // EFFECTS: updates note title and content with text from JTextAreas
+    public void updateNote(Note note, JTextArea title, JTextArea content) {
+
+    }
+
+    // MODIFIES: notebook
+    // EFFECTS: removes the given note from notebook 
+    public void deleteNote(Note note) {
+
     }
 }

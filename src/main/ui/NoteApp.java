@@ -39,7 +39,6 @@ public class NoteApp extends JFrame {
     private NotificationPanel notificationPanel = new NotificationPanel();
     private ButtonsPanel buttonsPanel = new ButtonsPanel(this);
     private WorkspacePanel workspacePanel = new WorkspacePanel(this);
-    private NoteWindow noteWindow = new NoteWindow(this, notificationPanel, workspacePanel);
     private CreateNoteWindow createNoteWindow = new CreateNoteWindow(this, notificationPanel, workspacePanel);
 
     // EFFECTS: Initializes the application with new notebook and input handler
@@ -115,12 +114,6 @@ public class NoteApp extends JFrame {
         return false;
     }
 
-    // MODIFIES: notebook
-    // EFFFECTS: removes given note from notebook
-    public void deleteNote(Note note) {
-        notebook.deleteNote(note);
-    }
-
     // EFFECTS: saves the notebook to a JSON file
     public void saveNoteBook() {
         try {
@@ -159,10 +152,19 @@ public class NoteApp extends JFrame {
     }
 
     public void displayNote(Note note) {
+        NoteWindow noteWindow = new NoteWindow(this, note);
         noteWindow.displayNote(note);
     }
 
     public void createNote() {
         createNoteWindow.createNote();
+    }
+
+    public NotificationPanel getNotificationPanel() {
+        return notificationPanel;
+    }
+
+    public WorkspacePanel getWorkspacePanel() {
+        return workspacePanel;
     }
 }
