@@ -21,24 +21,20 @@ public class NoteWindow extends JDialog {
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private final Color NOTE_COLOR = new Color(255, 235, 161);
 
-    // Creates a new window connecting to NoteApp, NotificationPanel, and
-    // WorkspacePanel
+    // Creates a new window with default settings connected to NoteApp, displaying Note
     public NoteWindow(NoteApp app, Note note) {
         super(app, note.getTitle(), false);
         this.app = app;
         setSize(400, 400);
         setLayout(null);
         getContentPane().setBackground(NOTE_COLOR);
-
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-        setLocationRelativeTo(this);
+        setLocationRelativeTo(app);
         setVisible(true);
     }
 
     // EFFECTS: displays title and content of a note, the user can edit title and
-    // content, updating the note when closed.
-    // User can also press the delete button to delete the note
+    // content
     public void displayNote(Note note) {
         JTextArea title = helper.createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR);
         title.setBounds(20, 20, 400, 25);
@@ -53,9 +49,7 @@ public class NoteWindow extends JDialog {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                note.setTitle(title.getText());
-                note.setContent(content.getText());
-                app.getWorkspacePanel().displayNotes();
+                updateNote(note, title, content);
             }
         });
 
@@ -65,23 +59,25 @@ public class NoteWindow extends JDialog {
         add(deleteButton);
 
         deleteButton.addActionListener(event -> {
-            app.getNotificationPanel().createNotification("Note \'" + note.getTitle() + "\' Deleted!");
-            app.getNoteBook().deleteNote(note);
-            JOptionPane.showMessageDialog(this, "Note Deleted!");
-            dispose();
-            app.getWorkspacePanel().displayNotes();
+            deleteNote(note);
         });
     }
 
     // MODIFIES: note
     // EFFECTS: updates note title and content with text from JTextAreas
     public void updateNote(Note note, JTextArea title, JTextArea content) {
-
+        note.setTitle(title.getText());
+        note.setContent(content.getText());
+        app.getWorkspacePanel().displayNotes();
     }
 
     // MODIFIES: notebook
-    // EFFECTS: removes the given note from notebook 
+    // EFFECTS: removes the given note from notebook
     public void deleteNote(Note note) {
-
+        app.getNotificationPanel().createNotification("Note \'" + note.getTitle() + "\' Deleted!");
+        app.getNoteBook().deleteNote(note);
+        JOptionPane.showMessageDialog(this, "Note Deleted!");
+        dispose();
+        app.getWorkspacePanel().displayNotes();
     }
 }
