@@ -18,41 +18,28 @@ public class ButtonsPanel extends JPanel implements ActionListener {
     private Helpers helper = new Helpers();
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private final Color NOTE_COLOR = new Color(255, 235, 161);
-    private boolean loaded;
-    private boolean saved;
 
     // EFFECTS: Creates a buttons panel associated to NoteApp, with default panel
     // settings
     public ButtonsPanel(NoteApp app) {
         this.app = app;
-        loaded = app.getLoaded();
-        saved = app.getSaved();
         setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         setBackground(BACKGROUND_COLOR);
     }
 
-    // EFFECTS: Creates buttons and adds to panel,
-    // If user has not loaded or saved, the user may load in notes,
-    // If user has either loaded or saved, and has made a change, they may save the
-    // note
-    // If user has made a note without loading, the user may save the note
+    // EFFECTS: Creates buttons to add, load, and save notes and adds to panel
     public void drawButtons() {
         JButton addNoteButton = helper.createButton("Add Note", NOTE_COLOR, "addNote");
         addNoteButton.addActionListener(this);
         add(addNoteButton);
 
-        if (!loaded && !saved) {
-            JButton loadButton = helper.createButton("Load Notes", NOTE_COLOR, "loadNotes");
-            loadButton.addActionListener(this);
-            add(loadButton);
-        }
+        JButton loadButton = helper.createButton("Load Notes", NOTE_COLOR, "loadNotes");
+        loadButton.addActionListener(this);
+        add(loadButton);
 
-        if (!app.compareNoteBookToFile() && (loaded || saved) ||
-                !app.getNoteBook().getAllNotes().isEmpty() && !loaded && !saved) {
-            JButton saveAvailable = helper.createButton("Save Notes", NOTE_COLOR, "saveNotes");
-            saveAvailable.addActionListener(this);
-            add(saveAvailable);
-        }
+        JButton saveBUtton = helper.createButton("Save Notes", NOTE_COLOR, "saveNotes");
+        saveBUtton.addActionListener(this);
+        add(saveBUtton);
     }
 
     // EFFECTS: calls respective methods to NoteApp based on user button press
