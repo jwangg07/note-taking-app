@@ -35,7 +35,7 @@ public class WorkspacePanel extends JPanel {
     // content, the user may click on a specific note to view and edit the note
     public void displayNotes() {
         removeAll();
-        for (Note note : app.getNoteBook().getAllNotes()) {
+        for (Note note : app.getVisibleNoteBook().getAllNotes()) {
             JPanel noteContainer = new JPanel();
             noteContainer.setLayout(null);
             noteContainer.setPreferredSize(new Dimension(200, 200));

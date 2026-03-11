@@ -22,6 +22,7 @@ import persistance.WriteJson;
 public class NoteApp extends JFrame {
 
     private final String filePath = "data/noteBook.json";
+    private NoteBook visibleNotebook;
     private NoteBook notebook;
     private ReadJson readjson;
     private WriteJson writejson;
@@ -69,7 +70,6 @@ public class NoteApp extends JFrame {
 
         setGridBagConstraints(1, 0, 1, GridBagConstraints.NONE, 1, 0, GridBagConstraints.FIRST_LINE_END);
         add(buttonsPanel, c);
-        buttonsPanel.drawButtons();
         revalidate();
         repaint();
     }
@@ -103,7 +103,13 @@ public class NoteApp extends JFrame {
     // EFFECTS: filters all notes in notebook, keeping notes that match the given
     // prefix, and displays them
     public void filterNotes(String prefix) {
-
+        visibleNotebook = new NoteBook();
+        for (Note note : notebook.getAllNotes()) {
+            if (note.getTitle().startsWith(prefix)) {
+                visibleNotebook.addNote(note);
+            }
+        }
+        workspacePanel.displayNotes();
     }
 
     // EFFECTS: saves the notebook to a JSON file
@@ -121,11 +127,16 @@ public class NoteApp extends JFrame {
     public void loadNoteBook() {
         try {
             notebook = readjson.read();
+            visibleNotebook = notebook;
             notificationPanel.createNotification("Loaded notebook from " + filePath);
             workspacePanel.displayNotes();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
         }
+    }
+
+    public NoteBook getVisibleNoteBook() {
+        return visibleNotebook;
     }
 
     public NoteBook getNoteBook() {
