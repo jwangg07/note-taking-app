@@ -42,6 +42,13 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         add(saveBUtton);
     }
 
+    // MODIFIES: NoteApp
+    // EFFECTS: Creates a search bar and adds to panel, 
+    // User inputs filters the displayed notes by matching prefixes
+    public void drawSearchBar() {
+
+    }
+
     // EFFECTS: calls respective methods to NoteApp based on user button press
     @Override
     public void actionPerformed(ActionEvent e) {
