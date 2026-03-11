@@ -62,8 +62,8 @@ public class NoteApp extends JFrame {
     private void drawNoteBook() {
         setGridBagConstraints(0, 1, 2, GridBagConstraints.BOTH, 1, 1, GridBagConstraints.CENTER);
         add(workspacePanel, c);
-        setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
 
+        setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
         notificationPanel.drawNotifications();
         add(notificationPanel, c);
 
@@ -97,6 +97,13 @@ public class NoteApp extends JFrame {
             System.out.println("Failed to read file: " + filePath);
         }
         return false;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: filters all notes in notebook, keeping notes that match the given
+    // prefix, and displays them
+    public void filterNotes(String prefix) {
+
     }
 
     // EFFECTS: saves the notebook to a JSON file
