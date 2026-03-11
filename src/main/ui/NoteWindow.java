@@ -69,6 +69,9 @@ public class NoteWindow extends JDialog {
         note.setTitle(title.getText());
         note.setContent(content.getText());
         app.getWorkspacePanel().displayNotes();
+        if (!app.compareNoteBookToFile()) {
+            app.getNotificationPanel().createNotification("You have unsaved changes!");
+        }
     }
 
     // MODIFIES: notebook

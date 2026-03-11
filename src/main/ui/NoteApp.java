@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
@@ -24,29 +23,24 @@ public class NoteApp extends JFrame {
 
     private final String filePath = "data/noteBook.json";
     private NoteBook notebook;
-    private boolean loaded;
-    private boolean saved;
     private ReadJson readjson;
     private WriteJson writejson;
 
     private GridBagConstraints c = new GridBagConstraints();
-    private Helpers helper = new Helpers(this);
     private final int WIDTH = 1200;
     private final int HEIGHT = 900;
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
-    private final Color NOTE_COLOR = new Color(255, 235, 161);
 
     private NotificationPanel notificationPanel = new NotificationPanel();
     private ButtonsPanel buttonsPanel = new ButtonsPanel(this);
     private WorkspacePanel workspacePanel = new WorkspacePanel(this);
     private CreateNoteWindow createNoteWindow = new CreateNoteWindow(this, notificationPanel, workspacePanel);
 
-    // EFFECTS: Initializes the application with new notebook and input handler
+    // EFFECTS: Initializes the application with new notebook and default gui
+    // settings
     public NoteApp() {
         super("Notebook");
         notebook = new NoteBook();
-        loaded = false;
-        saved = false;
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
 
@@ -59,24 +53,15 @@ public class NoteApp extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+        notificationPanel.createNotification("You have a notebook saved!");
         drawNoteBook();
     }
 
     // EFFECTS: draws all background elements: buttons top right, notifications top
-    // left
+    // left, and notes in the center
     private void drawNoteBook() {
         setGridBagConstraints(0, 1, 2, GridBagConstraints.BOTH, 1, 1, GridBagConstraints.CENTER);
         add(workspacePanel, c);
-
-        if (!loaded && !saved) {
-            notificationPanel.createNotification("You have a notebook saved!");
-        }
-
-        if (!compareNoteBookToFile() && (loaded || saved) ||
-                !notebook.getAllNotes().isEmpty() && !loaded && !saved) {
-            JLabel saveAvailable = helper.createLabel("You have unsaved changes!", NOTE_COLOR.darker(), 16);
-            notificationPanel.add(saveAvailable);
-        }
         setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
 
         notificationPanel.drawNotifications();
@@ -118,8 +103,6 @@ public class NoteApp extends JFrame {
     public void saveNoteBook() {
         try {
             writejson.write(notebook);
-            saved = true;
-            System.out.println("Saved notebook to " + filePath);
             notificationPanel.createNotification("Saved notebook to " + filePath);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write notebook to file " + filePath);
@@ -131,20 +114,11 @@ public class NoteApp extends JFrame {
     public void loadNoteBook() {
         try {
             notebook = readjson.read();
-            loaded = true;
             notificationPanel.createNotification("Loaded notebook from " + filePath);
             workspacePanel.displayNotes();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
         }
-    }
-
-    public boolean getLoaded() {
-        return loaded;
-    }
-
-    public boolean getSaved() {
-        return saved;
     }
 
     public NoteBook getNoteBook() {
