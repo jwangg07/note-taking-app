@@ -1,13 +1,13 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -42,13 +42,16 @@ public class NoteWindow extends JDialog {
     // EFFECTS: displays title and content of a note, the user can edit title and
     // content
     public void displayNote(Note note) {
-        JTextArea title = helper.createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR);
+        JTextArea title = helper.createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR, 20);
         title.setBounds(20, 20, 400, 25);
         add(title);
 
-        JTextArea content = helper.createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR);
+        JTextArea content = helper.createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR, 12);
         JScrollPane scroll = new JScrollPane(content);
         scroll.setBounds(20, 60, 350, 250);
+        scroll.setBorder(null);
+        // Line 55 from stack overflow: https://stackoverflow.com/questions/2648585/jscrollpane-without-scrollbars 
+        scroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
         add(scroll);
 
         // Code inspired from Stack Overflow:

@@ -41,7 +41,7 @@ public class WorkspacePanel extends JPanel {
             noteContainer.setPreferredSize(new Dimension(200, 200));
             noteContainer.setBackground(NOTE_COLOR);
 
-            JLabel title = helper.createLabel(note.getTitle(), Color.BLACK, 18);
+            JLabel title = helper.createLabel(note.getTitle(), Color.BLACK, 20);
             title.setBounds(10, 10, 180, 20);
             noteContainer.add(title);
 

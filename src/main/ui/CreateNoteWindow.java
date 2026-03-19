@@ -58,7 +58,7 @@ public class CreateNoteWindow extends JDialog {
         contentLabel.setBounds(20, 60, 60, 25);
         newNote.add(contentLabel);
 
-        JTextArea contentTextArea = helper.createTextArea("", Color.BLACK, NOTE_COLOR);
+        JTextArea contentTextArea = helper.createTextArea("", Color.BLACK, NOTE_COLOR, 11);
         contentTextArea.setBounds(20, 90, 350, 120);
         contentTextArea.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
         newNote.add(contentTextArea);
@@ -80,7 +80,6 @@ public class CreateNoteWindow extends JDialog {
             notificationPanel.createNotification("Note \'" + title + "\' Created!");
             newNote.dispose();
             app.filterNotes();
-            // workspacePanel.displayNotes();
         });
     }
 }

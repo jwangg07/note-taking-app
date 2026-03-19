@@ -43,8 +43,9 @@ public class Helpers {
     }
 
     // EFFECTS: Creates a JTextArea based on parameters and returns it
-    public JTextArea createTextArea(String text, Color textColor, Color bgColor) {
+    public JTextArea createTextArea(String text, Color textColor, Color bgColor, int textSize) {
         JTextArea textArea = new JTextArea(text);
+        textArea.setFont(new Font("Default", Font.PLAIN, textSize));
         textArea.setForeground(textColor);
         textArea.setBackground(bgColor);
         textArea.setLineWrap(true);
