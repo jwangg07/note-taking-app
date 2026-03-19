@@ -79,7 +79,8 @@ public class CreateNoteWindow extends JDialog {
             JOptionPane.showMessageDialog(newNote, "Note Created!");
             notificationPanel.createNotification("Note \'" + title + "\' Created!");
             newNote.dispose();
-            workspacePanel.displayNotes();
+            app.filterNotes();
+            // workspacePanel.displayNotes();
         });
     }
 }

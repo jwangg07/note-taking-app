@@ -22,6 +22,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
     private Helpers helper = new Helpers();
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private final Color NOTE_COLOR = new Color(255, 235, 161);
+    private String searchBarValue;
 
     // EFFECTS: Creates a buttons panel associated to NoteApp, with default panel
     // settings
@@ -61,19 +62,26 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         searchBar.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void removeUpdate(DocumentEvent e) {
-                app.filterNotes(searchBar.getText());            
+                searchBarValue = searchBar.getText();            
+                app.filterNotes();
             }
             @Override
             public void insertUpdate(DocumentEvent e) {
-                app.filterNotes(searchBar.getText());            
+                searchBarValue = searchBar.getText();            
+                app.filterNotes();            
             }
             @Override
             public void changedUpdate(DocumentEvent e) {
-                app.filterNotes(searchBar.getText());            
+                searchBarValue = searchBar.getText();            
+                app.filterNotes();            
             }
         });
 
         add(searchBar);
+    }
+
+    public String getSearchBarValue() {
+        return searchBarValue;
     }
 
     // EFFECTS: calls respective methods to NoteApp based on user button press

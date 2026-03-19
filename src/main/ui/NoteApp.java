@@ -102,7 +102,8 @@ public class NoteApp extends JFrame {
     // MODIFIES: this
     // EFFECTS: filters all notes in notebook, keeping notes that match the given
     // prefix, and displays them
-    public void filterNotes(String prefix) {
+    public void filterNotes() {
+        String prefix = buttonsPanel.getSearchBarValue();
         visibleNotebook = new NoteBook();
         for (Note note : notebook.getAllNotes()) {
             if (note.getTitle().startsWith(prefix)) {
