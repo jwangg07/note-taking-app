@@ -7,6 +7,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
@@ -20,17 +22,21 @@ public class NoteWindow extends JDialog {
     private Helpers helper = new Helpers();
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private final Color NOTE_COLOR = new Color(255, 235, 161);
+    private final int WIDTH = 400;
+    private final int HEIGHT = 400;
 
-    // Creates a new window with default settings connected to NoteApp, displaying Note
+    // Creates a new window with default settings connected to NoteApp, displaying
+    // Note
     public NoteWindow(NoteApp app, Note note) {
         super(app, note.getTitle(), false);
         this.app = app;
-        setSize(400, 400);
+        setSize(WIDTH, HEIGHT);
         setLayout(null);
         getContentPane().setBackground(NOTE_COLOR);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(app);
         setVisible(true);
+        setResizable(false);
     }
 
     // EFFECTS: displays title and content of a note, the user can edit title and
@@ -41,8 +47,9 @@ public class NoteWindow extends JDialog {
         add(title);
 
         JTextArea content = helper.createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR);
-        content.setBounds(20, 60, 350, 200);
-        add(content);
+        JScrollPane scroll = new JScrollPane(content);
+        scroll.setBounds(20, 60, 350, 250);
+        add(scroll);
 
         // Code inspired from Stack Overflow:
         // https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
@@ -54,7 +61,7 @@ public class NoteWindow extends JDialog {
         });
 
         JButton deleteButton = helper.createButton("delete note", BACKGROUND_COLOR, null);
-        deleteButton.setBounds(10, 330, 120, 30);
+        deleteButton.setBounds(WIDTH-150, HEIGHT-80, 120, 30);
         deleteButton.setForeground(Color.WHITE);
         add(deleteButton);
 
