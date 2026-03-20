@@ -4,7 +4,12 @@ import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,6 +26,7 @@ public class WorkspacePanel extends JPanel {
     private Helpers helper = new Helpers();
     private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private final Color NOTE_COLOR = new Color(255, 235, 161);
+    private boolean showBackground;
 
     // Creates a workspace panel associated to NoteApp, with a background, flow
     // layout, and orientation of items inside from left to right
@@ -29,6 +35,7 @@ public class WorkspacePanel extends JPanel {
         setBackground(BACKGROUND_COLOR);
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
         setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        showBackground = false;
     }
 
     // EFFECTS: redraws each note in notebook as a box displaying the title and
@@ -67,8 +74,41 @@ public class WorkspacePanel extends JPanel {
         repaint();
     }
 
-    // EFFECTS: changes the background image from default background to new background
+    // MODIFIES: this
+    // EFFECTS: changes the state of whether the background is shown or not, and updates JPanel
     public void changeBackground() {
+        if (showBackground) {
+            showBackground = false;
+        } else {
+            showBackground = true;
+        }
+        revalidate();
+        repaint();
+    }
+    
+    // Code inspired from Stack Overflow: https://stackoverflow.com/questions/19125707/simplest-way-to-set-image-as-jpanel-background 
+    // EFFECTS: updates background with respective image
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); 
+        Image backgroundImage = getBackgroundImage();
+        if (backgroundImage != null) {
+            g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
+        }
+    }
 
+    // EFFECTS: returns the background image to display given state of showBackground
+    private Image getBackgroundImage() {
+        Image backgroundImage = null;
+        try {
+            if (showBackground) {
+                backgroundImage = ImageIO.read(new File("img\\backgroundImage.png")); 
+            } else {
+                backgroundImage = ImageIO.read(new File("img\\default.png")); 
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to load image");
+        }
+        return backgroundImage;
     }
 }
