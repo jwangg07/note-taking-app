@@ -18,3 +18,12 @@ FastNote is a **lightweight** note-taking application that has all the *necessar
 - As a user, I want to remove a document from my collection
 - As a user, I want to be able to save individual documents when I want to
 - As a user, I want to be able to to load individual documents form a file when I want to
+
+# Instructions for End User
+
+- You can view the panel that displays the Notes that have already been added to the Notebook by doing nothing, all Notes (if any) are displayed within the window.
+- You can generate the first required action related to the user story "adding multiple Notes to a Notebook" by clicking the "Add Note" button on the top right corner, filling out the popup, and clicking the "Create Note" button in the popup.
+- You can generate the second required action related to the user story "displaying a subset of Notes" by entering a string in the blank textbox in the top right corner.
+- You can locate my visual component by clicking the "Change Background" button on the top right corner.
+- You can save the state of my application by clicking the "Save Notes" button on the top right corner.
+- You can reload the state of my application by clicking the "Load Notes" button on the top right corner.
