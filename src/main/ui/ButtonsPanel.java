@@ -45,9 +45,13 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         loadButton.addActionListener(this);
         add(loadButton);
 
-        JButton saveBUtton = helper.createButton("Save Notes", NOTE_COLOR, "saveNotes");
-        saveBUtton.addActionListener(this);
-        add(saveBUtton);
+        JButton saveButton = helper.createButton("Save Notes", NOTE_COLOR, "saveNotes");
+        saveButton.addActionListener(this);
+        add(saveButton);
+
+        JButton backgroundButton = helper.createButton("Change Background", NOTE_COLOR, "changeBackground");
+        backgroundButton.addActionListener(this);
+        add(backgroundButton);
     }
 
     // EFFECTS: Creates a search bar and adds to panel, 
@@ -94,6 +98,8 @@ public class ButtonsPanel extends JPanel implements ActionListener {
             app.loadNoteBook();
         } else if (e.getActionCommand().equals("saveNotes")) {
             app.saveNoteBook();
+        } else if (e.getActionCommand().equals("changeBackground")) {
+            app.getWorkspacePanel().changeBackground();
         }
     }
 }
