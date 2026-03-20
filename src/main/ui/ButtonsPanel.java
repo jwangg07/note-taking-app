@@ -28,6 +28,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
     // settings
     public ButtonsPanel(NoteApp app) {
         this.app = app;
+        searchBarValue = "";
         setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         setBackground(BACKGROUND_COLOR);
         drawSearchBar();

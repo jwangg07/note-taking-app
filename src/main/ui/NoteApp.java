@@ -42,6 +42,7 @@ public class NoteApp extends JFrame {
     public NoteApp() {
         super("Notebook");
         notebook = new NoteBook();
+        visibleNotebook = new NoteBook();
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
 
