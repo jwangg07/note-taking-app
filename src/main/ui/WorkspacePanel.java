@@ -66,4 +66,9 @@ public class WorkspacePanel extends JPanel {
         revalidate();
         repaint();
     }
+
+    // EFFECTS: changes the background image from default background to new background
+    public void changeBackground() {
+
+    }
 }
