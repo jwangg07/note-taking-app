@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
@@ -26,6 +27,7 @@ public class NotificationPanel extends JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(BACKGROUND_COLOR);
+        setPreferredSize(new Dimension(500, 100));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 

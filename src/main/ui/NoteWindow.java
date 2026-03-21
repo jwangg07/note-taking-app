@@ -7,7 +7,6 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -90,7 +89,6 @@ public class NoteWindow extends JDialog {
     public void deleteNote(Note note) {
         app.getNotificationPanel().createNotification("Note \'" + note.getTitle() + "\' Deleted!");
         app.getNoteBook().deleteNote(note);
-        JOptionPane.showMessageDialog(this, "Note Deleted!");
         dispose();
         app.filterNotes();
         app.getWorkspacePanel().displayNotes();
