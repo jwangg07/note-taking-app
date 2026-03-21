@@ -27,10 +27,10 @@ public class NoteApp extends JFrame {
     private ReadJson readjson;
     private WriteJson writejson;
 
-    private GridBagConstraints c = new GridBagConstraints();
-    private final int WIDTH = 1200;
-    private final int HEIGHT = 900;
-    private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
+    private GridBagConstraints constraints = new GridBagConstraints();
+    private static final int WIDTH = 1200;
+    private static final int HEIGHT = 900;
+    private static final Color BACKGROUND_COLOR = new Color(46, 31, 39);
 
     private NotificationPanel notificationPanel = new NotificationPanel();
     private ButtonsPanel buttonsPanel = new ButtonsPanel(this);
@@ -63,14 +63,14 @@ public class NoteApp extends JFrame {
     // left, and notes in the center
     private void drawNoteBook() {
         setGridBagConstraints(0, 1, 2, GridBagConstraints.BOTH, 1, 1, GridBagConstraints.CENTER);
-        add(workspacePanel, c);
+        add(workspacePanel, constraints);
 
         setGridBagConstraints(0, 0, 1, GridBagConstraints.NONE, 0, 0, GridBagConstraints.FIRST_LINE_START);
         notificationPanel.drawNotifications();
-        add(notificationPanel, c);
+        add(notificationPanel, constraints);
 
         setGridBagConstraints(1, 0, 1, GridBagConstraints.NONE, 1, 0, GridBagConstraints.FIRST_LINE_END);
-        add(buttonsPanel, c);
+        add(buttonsPanel, constraints);
         revalidate();
         repaint();
     }
@@ -78,13 +78,13 @@ public class NoteApp extends JFrame {
     // EFFECTS: Modifies GridBagConstraints based on parameters
     private void setGridBagConstraints(int beginX, int beginY, int widthSpan, int fill, int weightX, int weightY,
             int anchor) {
-        c.gridx = beginX;
-        c.gridy = beginY;
-        c.gridwidth = widthSpan;
-        c.fill = fill;
-        c.weightx = weightX;
-        c.weighty = weightY;
-        c.anchor = anchor;
+        constraints.gridx = beginX;
+        constraints.gridy = beginY;
+        constraints.gridwidth = widthSpan;
+        constraints.fill = fill;
+        constraints.weightx = weightX;
+        constraints.weighty = weightY;
+        constraints.anchor = anchor;
     }
 
     // EFFECTS: returns true if the current notebook is the same as the saved JSON

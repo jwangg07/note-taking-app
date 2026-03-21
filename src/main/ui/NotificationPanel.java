@@ -16,8 +16,8 @@ public class NotificationPanel extends JPanel {
 
     private LinkedList<String> notifications;
     private Helpers helper = new Helpers();
-    private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
-    private final Color NOTE_COLOR = new Color(255, 235, 161);
+    private static final Color BACKGROUND_COLOR = new Color(46, 31, 39);
+    private static final Color NOTE_COLOR = new Color(255, 235, 161);
 
     // EFFECTS: creates a notification panel with box layout, background color, and
     // padding

@@ -20,8 +20,8 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 
     NoteApp app;
     private Helpers helper = new Helpers();
-    private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
-    private final Color NOTE_COLOR = new Color(255, 235, 161);
+    private static final Color BACKGROUND_COLOR = new Color(46, 31, 39);
+    private static final Color NOTE_COLOR = new Color(255, 235, 161);
     private String searchBarValue;
 
     // EFFECTS: Creates a buttons panel associated to NoteApp, with default panel
@@ -54,7 +54,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         add(backgroundButton);
     }
 
-    // EFFECTS: Creates a search bar and adds to panel, 
+    // EFFECTS: Creates a search bar and adds to panel,
     // User inputs filters the displayed notes by matching prefixes
     public void drawSearchBar() {
         JTextField searchBar = new JTextField();
@@ -63,25 +63,26 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         searchBar.setBorder(null);
 
         // Code inspired from Stack Overflow:
-        // https://stackoverflow.com/questions/7740465/text-changed-event-in-jtextarea-how-to 
+        // https://stackoverflow.com/questions/7740465/text-changed-event-in-jtextarea-how-to
         searchBar.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void removeUpdate(DocumentEvent e) {
-                searchBarValue = searchBar.getText();            
+                searchBarValue = searchBar.getText();
                 app.filterNotes();
             }
+
             @Override
             public void insertUpdate(DocumentEvent e) {
-                searchBarValue = searchBar.getText();            
-                app.filterNotes();            
+                searchBarValue = searchBar.getText();
+                app.filterNotes();
             }
+
             @Override
             public void changedUpdate(DocumentEvent e) {
-                searchBarValue = searchBar.getText();            
-                app.filterNotes();            
+                searchBarValue = searchBar.getText();
+                app.filterNotes();
             }
         });
-
         add(searchBar);
     }
 

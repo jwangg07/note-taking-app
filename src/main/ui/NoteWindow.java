@@ -20,10 +20,10 @@ public class NoteWindow extends JDialog {
 
     NoteApp app;
     private Helpers helper = new Helpers();
-    private final Color BACKGROUND_COLOR = new Color(46, 31, 39);
-    private final Color NOTE_COLOR = new Color(255, 235, 161);
-    private final int WIDTH = 400;
-    private final int HEIGHT = 400;
+    private static final Color BACKGROUND_COLOR = new Color(46, 31, 39);
+    private static final Color NOTE_COLOR = new Color(255, 235, 161);
+    private static final int WIDTH = 400;
+    private static final int HEIGHT = 400;
 
     // Creates a new window with default settings connected to NoteApp, displaying
     // Note
@@ -50,8 +50,9 @@ public class NoteWindow extends JDialog {
         JScrollPane scroll = new JScrollPane(content);
         scroll.setBounds(20, 60, 350, 250);
         scroll.setBorder(null);
-        // Line 55 from stack overflow: https://stackoverflow.com/questions/2648585/jscrollpane-without-scrollbars 
-        scroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
+        // Line 55 from stack overflow:
+        // https://stackoverflow.com/questions/2648585/jscrollpane-without-scrollbars
+        scroll.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
         add(scroll);
 
         // Code inspired from Stack Overflow:
@@ -64,7 +65,7 @@ public class NoteWindow extends JDialog {
         });
 
         JButton deleteButton = helper.createButton("delete note", BACKGROUND_COLOR, null);
-        deleteButton.setBounds(WIDTH-150, HEIGHT-80, 120, 30);
+        deleteButton.setBounds(WIDTH - 150, HEIGHT - 80, 120, 30);
         deleteButton.setForeground(Color.WHITE);
         add(deleteButton);
 
