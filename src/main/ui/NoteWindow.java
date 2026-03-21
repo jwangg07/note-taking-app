@@ -50,7 +50,7 @@ public class NoteWindow extends JDialog {
         JScrollPane scroll = new JScrollPane(content);
         scroll.setBounds(20, 60, 350, 250);
         scroll.setBorder(null);
-        // Line 55 from stack overflow:
+        // Code inspired from stack overflow:
         // https://stackoverflow.com/questions/2648585/jscrollpane-without-scrollbars
         scroll.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
         add(scroll);
@@ -92,6 +92,7 @@ public class NoteWindow extends JDialog {
         app.getNoteBook().deleteNote(note);
         JOptionPane.showMessageDialog(this, "Note Deleted!");
         dispose();
+        app.filterNotes();
         app.getWorkspacePanel().displayNotes();
     }
 }
