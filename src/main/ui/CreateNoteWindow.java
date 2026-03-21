@@ -14,7 +14,8 @@ import model.Note;
 // Represents the GUI for a window to create a new note
 @ExcludeFromJacocoGeneratedReport
 public class CreateNoteWindow extends JDialog {
-    NoteApp app;
+    
+    private NoteApp app;
     private Helpers helper = new Helpers();
     private JTextArea titleField;
     private JTextArea contentField;
@@ -23,7 +24,7 @@ public class CreateNoteWindow extends JDialog {
 
     // Creates a new window connecting to NoteApp, NotificationPanel, and
     // WorkspacePanel
-    public CreateNoteWindow(NoteApp app, NotificationPanel notificationPanel, WorkspacePanel workspacePanel) {
+    public CreateNoteWindow(NoteApp app) {
         this.app = app;
     }
 
@@ -34,9 +35,7 @@ public class CreateNoteWindow extends JDialog {
         newNote.setSize(400, 300);
         newNote.setLayout(null);
         newNote.getContentPane().setBackground(NOTE_COLOR);
-
         newNote.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
         newNote.setLocationRelativeTo(this);
         newNote.setVisible(true);
 

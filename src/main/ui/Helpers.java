@@ -52,7 +52,4 @@ public class Helpers {
         textArea.setWrapStyleWord(true);
         return textArea;
     }
-
-    
-
 }
