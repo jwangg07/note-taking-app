@@ -57,12 +57,12 @@ public class CreateNoteWindow extends JDialog {
     // EFFECTS: draws the title and content field components for the popup.
     private void drawFields() {
         titleField = helper.createTextArea("", Color.BLACK, NOTE_COLOR, 11);
-        titleField.setBounds(60, 25, WIDTH-90, 20);
+        titleField.setBounds(60, 25, WIDTH - 90, 20);
         titleField.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
         add(titleField);
 
         contentField = helper.createTextArea("", Color.BLACK, NOTE_COLOR, 11);
-        contentField.setBounds(20, 90, WIDTH-50, HEIGHT-180);
+        contentField.setBounds(20, 90, WIDTH - 50, HEIGHT - 180);
         contentField.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
         add(contentField);
     }
@@ -70,7 +70,7 @@ public class CreateNoteWindow extends JDialog {
     // EFFECTS: draws the create note button with action listener to create note
     private void drawButton() {
         JButton createButton = helper.createButton("Create Note", BACKGROUND_COLOR, null);
-        createButton.setBounds(WIDTH-150, HEIGHT-80, 120, 30);
+        createButton.setBounds(WIDTH - 150, HEIGHT - 80, 120, 30);
         createButton.setForeground(Color.WHITE);
         add(createButton);
 

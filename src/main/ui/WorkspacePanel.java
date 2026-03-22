@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -29,12 +28,11 @@ public class WorkspacePanel extends JPanel {
     private boolean showBackground;
 
     // Creates a workspace panel associated to NoteApp, with a background, flow
-    // layout, and orientation of items inside from left to right
+    // layout
     public WorkspacePanel(NoteApp app) {
         this.app = app;
         setBackground(BACKGROUND_COLOR);
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
-        setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         showBackground = false;
     }
 
