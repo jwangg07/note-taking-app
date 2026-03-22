@@ -42,12 +42,12 @@ public class NoteWindow extends JDialog {
     // content
     public void displayNote(Note note) {
         JTextArea title = helper.createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR, 20);
-        title.setBounds(20, 20, 400, 25);
+        title.setBounds(20, 20, WIDTH, 25);
         add(title);
 
         JTextArea content = helper.createTextArea(note.getContent(), Color.BLACK, NOTE_COLOR, 12);
         JScrollPane scroll = new JScrollPane(content);
-        scroll.setBounds(20, 60, 350, 250);
+        scroll.setBounds(20, 60, WIDTH-50, HEIGHT-150);
         scroll.setBorder(null);
         // Code inspired from stack overflow:
         // https://stackoverflow.com/questions/2648585/jscrollpane-without-scrollbars

@@ -35,7 +35,6 @@ public class NoteApp extends JFrame {
     private NotificationPanel notificationPanel = new NotificationPanel();
     private ButtonsPanel buttonsPanel = new ButtonsPanel(this);
     private WorkspacePanel workspacePanel = new WorkspacePanel(this);
-    private CreateNoteWindow createNoteWindow = new CreateNoteWindow(this);
 
     // EFFECTS: Initializes the application with new notebook and default gui
     // settings
@@ -151,7 +150,7 @@ public class NoteApp extends JFrame {
     }
 
     public void createNote() {
-        createNoteWindow.createNote();
+        new CreateNoteWindow(this);
     }
 
     public NotificationPanel getNotificationPanel() {

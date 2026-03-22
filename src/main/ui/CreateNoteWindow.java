@@ -14,67 +14,65 @@ import model.Note;
 // Represents the GUI for a window to create a new note
 @ExcludeFromJacocoGeneratedReport
 public class CreateNoteWindow extends JDialog {
-    
+
     private NoteApp app;
     private Helpers helper = new Helpers();
     private JTextArea titleField;
     private JTextArea contentField;
     private static final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private static final Color NOTE_COLOR = new Color(255, 235, 161);
+    private static final int WIDTH = 400;
+    private static final int HEIGHT = 300;
 
-    // Creates a new window connecting to NoteApp, NotificationPanel, and
-    // WorkspacePanel
-    public CreateNoteWindow(NoteApp app) {
-        this.app = app;
-    }
-
-    // EFFECTS: create a popup prompting user for title and content of the note and
+    // create a popup prompting user for title and content of the note and
     // adds note to notebook
-    public void createNote() {
-        JDialog newNote = new JDialog(this, "Create Note", false);
-        newNote.setSize(400, 300);
-        newNote.setLayout(null);
-        newNote.getContentPane().setBackground(NOTE_COLOR);
-        newNote.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        newNote.setLocationRelativeTo(this);
-        newNote.setVisible(true);
+    public CreateNoteWindow(NoteApp app) {
+        super(app, "Create Note", false);
+        this.app = app;
+        setSize(WIDTH, HEIGHT);
+        setLayout(null);
+        getContentPane().setBackground(NOTE_COLOR);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(app);
+        setVisible(true);
+        setResizable(false);
 
-        drawTexts(newNote);
-        drawFields(newNote);
-        drawButton(newNote);
+        drawTexts();
+        drawFields();
+        drawButton();
     }
 
     // EFFECTS: draws the title and content text labels for the popup
-    private void drawTexts(JDialog newNote) {
+    private void drawTexts() {
         JLabel titleLabel = helper.createLabel("Title:", Color.BLACK, 12);
         titleLabel.setBounds(20, 20, 50, 25);
-        newNote.add(titleLabel);
+        add(titleLabel);
 
         JLabel contentLabel = helper.createLabel("Content:", Color.black, 12);
         contentLabel.setBounds(20, 60, 60, 25);
-        newNote.add(contentLabel);
+        add(contentLabel);
     }
 
     // MODIFIES: this
     // EFFECTS: draws the title and content field components for the popup.
-    private void drawFields(JDialog newNote) {
+    private void drawFields() {
         titleField = helper.createTextArea("", Color.BLACK, NOTE_COLOR, 11);
-        titleField.setBounds(60, 25, 310, 20);
+        titleField.setBounds(60, 25, WIDTH-90, 20);
         titleField.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
-        newNote.add(titleField);
+        add(titleField);
 
         contentField = helper.createTextArea("", Color.BLACK, NOTE_COLOR, 11);
-        contentField.setBounds(20, 90, 350, 120);
+        contentField.setBounds(20, 90, WIDTH-50, HEIGHT-180);
         contentField.setBorder(BorderFactory.createLineBorder(BACKGROUND_COLOR, 1));
-        newNote.add(contentField);
+        add(contentField);
     }
 
     // EFFECTS: draws the create note button with action listener to create note
-    private void drawButton(JDialog newNote) {
+    private void drawButton() {
         JButton createButton = helper.createButton("Create Note", BACKGROUND_COLOR, null);
-        createButton.setBounds(250, 220, 120, 30);
+        createButton.setBounds(WIDTH-150, HEIGHT-80, 120, 30);
         createButton.setForeground(Color.WHITE);
-        newNote.add(createButton);
+        add(createButton);
 
         // Code adapted from stack overflow:
         // https://stackoverflow.com/questions/62093192/java-dynamically-create-buttons-and-pass-a-parameter-to-action-performed#:~:text=For%20Swing%2C%20you'd%20need,link%20CC%20BY%2DSA%204.0
@@ -86,7 +84,7 @@ public class CreateNoteWindow extends JDialog {
             app.getNoteBook().addNote(note);
 
             app.getNotificationPanel().createNotification("Note \'" + title + "\' Created!");
-            newNote.dispose();
+            dispose();
             app.filterNotes();
         });
     }
