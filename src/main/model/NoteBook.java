@@ -26,7 +26,7 @@ public class NoteBook {
     public boolean addNote(Note n) {
         if (!notesList.contains(n)) {
             notesList.add(n);
-            EventLog.getInstance().logEvent(new Event("Added Note to Notebook"));
+            EventLog.getInstance().logEvent(new Event("Added Note \"" + n.getTitle() +"\" to Notebook"));
             return true;
         }
         return false;
@@ -39,7 +39,7 @@ public class NoteBook {
     public boolean deleteNote(Note n) {
         if (notesList.contains(n)) {
             notesList.remove(n);
-            EventLog.getInstance().logEvent(new Event("Note Deleted from Notebook"));
+            EventLog.getInstance().logEvent(new Event("Note \"" + n.getTitle() +"\" Deleted from Notebook"));
             return true;
         }
         return false;
@@ -50,7 +50,7 @@ public class NoteBook {
     public Note getNote(String title) {
         for (Note n : notesList) {
             if (n.getTitle().equals(title)) {
-                EventLog.getInstance().logEvent(new Event("Opened Note from Notebook"));
+                EventLog.getInstance().logEvent(new Event("Opened Note \"" + title + "\" from Notebook"));
                 return n;
             }
         }
@@ -61,7 +61,7 @@ public class NoteBook {
     // EFFECTS: sets the prefix by which the notes are filtered and filters them
     public void setFilter(String prefix) {
         filterPrefix = prefix;
-        EventLog.getInstance().logEvent(new Event("Filtered Notes from Notebook"));
+        EventLog.getInstance().logEvent(new Event("Updated Search to: " + prefix));
         filterNotes();
     }
 
@@ -74,6 +74,7 @@ public class NoteBook {
                 filteredNotes.add(note);
             }
         }
+        EventLog.getInstance().logEvent(new Event("Displaying " + filteredNotes.size() + " Note(s)"));
         return filteredNotes;
     }
 
