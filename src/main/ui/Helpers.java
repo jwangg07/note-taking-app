@@ -13,17 +13,6 @@ import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 @ExcludeFromJacocoGeneratedReport
 public class Helpers {
 
-    NoteApp app;
-
-    // EFFECTS: creates an instance of helper class associated to NoteApp
-    public Helpers(NoteApp app) {
-        this.app = app;
-    }
-
-    // EFFECTS: creates an instance of helper class
-    public Helpers() {
-    }
-
     // EFFECTS: Creates a JLabel based on given parameters and returns it
     public JLabel createLabel(String text, Color textColor, int textSize) {
         JLabel label = new JLabel(text);

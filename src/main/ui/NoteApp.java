@@ -80,6 +80,7 @@ public class NoteApp extends JFrame implements WindowListener {
         repaint();
     }
 
+    // MODIFIES: this
     // EFFECTS: Modifies GridBagConstraints based on parameters
     private void setGridBagConstraints(int beginX, int beginY, int widthSpan, int fill, int weightX, int weightY,
             int anchor) {
@@ -141,7 +142,7 @@ public class NoteApp extends JFrame implements WindowListener {
 
     public void displayNote(Note note) {
         NoteWindow noteWindow = new NoteWindow(this, note);
-        noteWindow.displayNote(note);
+        noteWindow.displayNote();
     }
 
     public void createNote() {

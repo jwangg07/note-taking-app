@@ -23,7 +23,8 @@ public class Note {
     }
 
     public void setTitle(String title) {
-        EventLog.getInstance().logEvent(new Event("Updated note title from " + this.title + " to " + title));
+        EventLog.getInstance()
+                .logEvent(new Event("Updated note title from \"" + this.title + "\" to \"" + title + "\""));
         this.title = title;
     }
 
@@ -32,7 +33,9 @@ public class Note {
     }
 
     public void setContent(String content) {
-        EventLog.getInstance().logEvent(new Event("Updated note content from " + this.content + " to " + content));
+        EventLog.getInstance()
+                .logEvent(new Event(
+                        "Updated note \"" + title + "\" content from \"" + this.content + "\" to \"" + content + "\""));
         this.content = content;
     }
 }

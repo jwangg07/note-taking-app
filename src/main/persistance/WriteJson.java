@@ -24,7 +24,7 @@ public class WriteJson {
     // throws FileNotFoundException if the path file does not exist
     public void write(NoteBook notebook) throws FileNotFoundException {
         writer = new PrintWriter(path);
-        JSONObject json = notebook.toJson();
+        JSONObject json = notebook.saveNotes();
         writer.print(json.toString(4));
         writer.close();
     }

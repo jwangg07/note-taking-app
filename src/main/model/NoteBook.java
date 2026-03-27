@@ -26,7 +26,7 @@ public class NoteBook {
     public boolean addNote(Note n) {
         if (!notesList.contains(n)) {
             notesList.add(n);
-            EventLog.getInstance().logEvent(new Event("Added Note \"" + n.getTitle() +"\" to Notebook"));
+            EventLog.getInstance().logEvent(new Event("Added Note \"" + n.getTitle() + "\" to Notebook"));
             return true;
         }
         return false;
@@ -39,7 +39,7 @@ public class NoteBook {
     public boolean deleteNote(Note n) {
         if (notesList.contains(n)) {
             notesList.remove(n);
-            EventLog.getInstance().logEvent(new Event("Note \"" + n.getTitle() +"\" Deleted from Notebook"));
+            EventLog.getInstance().logEvent(new Event("Note \"" + n.getTitle() + "\" Deleted from Notebook"));
             return true;
         }
         return false;
@@ -50,7 +50,6 @@ public class NoteBook {
     public Note getNote(String title) {
         for (Note n : notesList) {
             if (n.getTitle().equals(title)) {
-                EventLog.getInstance().logEvent(new Event("Opened Note \"" + title + "\" from Notebook"));
                 return n;
             }
         }
@@ -58,14 +57,13 @@ public class NoteBook {
     }
 
     // MODIFIES: this
-    // EFFECTS: sets the prefix by which the notes are filtered and filters them
+    // EFFECTS: sets the prefix by which the notes are filtered
     public void setFilter(String prefix) {
         filterPrefix = prefix;
         EventLog.getInstance().logEvent(new Event("Updated Search to: " + prefix));
     }
 
-    // EFFECTS: filters all notes in notebook, keeping notes that match the given
-    // prefix
+    // EFFECTS: filters all notes in notebook, keeping notes that match the prefix
     public List<Note> filterNotes() {
         List<Note> filteredNotes = new ArrayList<>();
         for (Note note : notesList) {
@@ -90,6 +88,11 @@ public class NoteBook {
         this.notesList = notesList;
     }
 
+    public JSONObject saveNotes() {
+        EventLog.getInstance().logEvent(new Event("Saved Notebook to file"));
+        return toJson();
+    }
+
     // EFFECTS: Converts notebook into a JSONObject
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -103,7 +106,6 @@ public class NoteBook {
         }
 
         json.put("notes", jsonArray);
-        EventLog.getInstance().logEvent(new Event("Saved Notebook to file"));
         return json;
     }
 }

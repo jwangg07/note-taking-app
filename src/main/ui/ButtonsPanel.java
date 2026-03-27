@@ -36,7 +36,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
     }
 
     // EFFECTS: Creates buttons to add, load, and save notes and adds to panel
-    public void drawButtons() {
+    private void drawButtons() {
         JButton addNoteButton = helper.createButton("Add Note", NOTE_COLOR, "addNote");
         addNoteButton.addActionListener(this);
         add(addNoteButton);
@@ -56,7 +56,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 
     // EFFECTS: Creates a search bar and adds to panel,
     // User inputs filters the displayed notes by matching prefixes
-    public void drawSearchBar() {
+    private void drawSearchBar() {
         JTextField searchBar = new JTextField();
         searchBar.setPreferredSize(new Dimension(75, 25));
         searchBar.setBackground(NOTE_COLOR);
@@ -67,26 +67,28 @@ public class ButtonsPanel extends JPanel implements ActionListener {
         searchBar.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void removeUpdate(DocumentEvent e) {
-                searchBarValue = searchBar.getText();
-                app.getNoteBook().setFilter(searchBarValue);
-                app.filterNotes();
+                handleSearchBarInput(searchBar);
             }
-            
+
             @Override
             public void insertUpdate(DocumentEvent e) {
-                searchBarValue = searchBar.getText();
-                app.getNoteBook().setFilter(searchBarValue);
-                app.filterNotes();
+                handleSearchBarInput(searchBar);
             }
-            
+
             @Override
             public void changedUpdate(DocumentEvent e) {
-                searchBarValue = searchBar.getText();
-                app.getNoteBook().setFilter(searchBarValue);
-                app.filterNotes();
+                handleSearchBarInput(searchBar);
             }
         });
         add(searchBar);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: handles user input in search bar and updates filters
+    private void handleSearchBarInput(JTextField searchBar) {
+        searchBarValue = searchBar.getText();
+        app.getNoteBook().setFilter(searchBarValue);
+        app.filterNotes();
     }
 
     public String getSearchBarValue() {

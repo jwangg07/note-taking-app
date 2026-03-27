@@ -18,6 +18,7 @@ import model.Note;
 public class NoteWindow extends JDialog {
 
     NoteApp app;
+    Note note;
     private Helpers helper = new Helpers();
     private static final Color BACKGROUND_COLOR = new Color(46, 31, 39);
     private static final Color NOTE_COLOR = new Color(255, 235, 161);
@@ -30,6 +31,7 @@ public class NoteWindow extends JDialog {
     public NoteWindow(NoteApp app, Note note) {
         super(app, note.getTitle(), false);
         this.app = app;
+        this.note = note;
         this.deleted = false;
         setSize(WIDTH, HEIGHT);
         setLayout(null);
@@ -42,7 +44,13 @@ public class NoteWindow extends JDialog {
 
     // EFFECTS: displays title and content of a note, the user can edit title and
     // content
-    public void displayNote(Note note) {
+    public void displayNote() {
+        drawTexts();
+        drawDeleteButton();
+    }
+
+    // EFFECTS: draws the title and content of the note, which the user can edit
+    private void drawTexts() {
         JTextArea title = helper.createTextArea(note.getTitle(), Color.BLACK, NOTE_COLOR, 20);
         title.setBounds(20, 20, WIDTH, 25);
         add(title);
@@ -66,7 +74,10 @@ public class NoteWindow extends JDialog {
                 }
             }
         });
+    }
 
+    // EFFECTS: draws a delete button, and deletes this note on click
+    private void drawDeleteButton() {
         JButton deleteButton = helper.createButton("delete note", BACKGROUND_COLOR, null);
         deleteButton.setBounds(WIDTH - 150, HEIGHT - 80, 120, 30);
         deleteButton.setForeground(Color.WHITE);
@@ -78,8 +89,9 @@ public class NoteWindow extends JDialog {
     }
 
     // MODIFIES: note
-    // EFFECTS: updates note title and content with text from JTextAreas if they are different
-    public void updateNote(Note note, JTextArea title, JTextArea content) {
+    // EFFECTS: updates note title and content with text from JTextAreas if they are
+    // different
+    private void updateNote(Note note, JTextArea title, JTextArea content) {
         String oldTitle = note.getTitle();
         String oldContent = note.getContent();
         String newTitle = title.getText();
