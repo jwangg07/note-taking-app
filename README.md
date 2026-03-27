@@ -27,3 +27,34 @@ FastNote is a **lightweight** note-taking application that has all the *necessar
 - You can locate my visual component by clicking the "Change Background" button on the top right corner.
 - You can save the state of my application by clicking the "Save Notes" button on the top right corner.
 - You can reload the state of my application by clicking the "Load Notes" button on the top right corner.
+
+# Phase 4: Task 2
+Thu Mar 26 21:05:29 PDT 2026
+Loaded Notebook from file
+Thu Mar 26 21:05:29 PDT 2026
+Displaying 3 Note(s)
+Thu Mar 26 21:05:45 PDT 2026
+Added Note "newest note" to Notebook
+Thu Mar 26 21:05:45 PDT 2026
+Displaying 4 Note(s)
+Thu Mar 26 21:05:59 PDT 2026
+Updated note title from "note2" to "note2 updated"
+Thu Mar 26 21:05:59 PDT 2026
+Displaying 4 Note(s)
+Thu Mar 26 21:05:59 PDT 2026
+Saved Notebook to file
+Thu Mar 26 21:06:04 PDT 2026
+Note "note1" Deleted from Notebook
+Thu Mar 26 21:06:04 PDT 2026
+Displaying 3 Note(s)
+Thu Mar 26 21:06:07 PDT 2026
+Updated Search to: n
+Thu Mar 26 21:06:07 PDT 2026
+Displaying 3 Note(s)
+Thu Mar 26 21:06:07 PDT 2026
+Updated Search to: ne
+Thu Mar 26 21:06:07 PDT 2026
+Displaying 2 Note(s)
+Thu Mar 26 21:06:14 PDT 2026
+Saved Notebook to file
+
