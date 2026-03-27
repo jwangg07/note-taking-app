@@ -4,14 +4,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JFrame;
 
 import org.json.JSONObject;
 
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
+import model.Event;
+import model.EventLog;
 import model.Note;
 import model.NoteBook;
 import persistance.ReadJson;
@@ -19,7 +25,7 @@ import persistance.WriteJson;
 
 // Represents the GUI of the notes application
 @ExcludeFromJacocoGeneratedReport
-public class NoteApp extends JFrame {
+public class NoteApp extends JFrame implements WindowListener {
 
     private final String filePath = "data/noteBook.json";
     private NoteBook visibleNotebook;
@@ -56,6 +62,8 @@ public class NoteApp extends JFrame {
         setResizable(false);
         notificationPanel.createNotification("You have a notebook saved!");
         drawNoteBook();
+
+        addWindowListener(this);
     }
 
     // EFFECTS: draws all background elements: buttons top right, notifications top
@@ -159,5 +167,37 @@ public class NoteApp extends JFrame {
 
     public WorkspacePanel getWorkspacePanel() {
         return workspacePanel;
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        for (Iterator<Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
+            Event event = it.next();
+            System.out.println(event.toString());
+        }
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
     }
 }
