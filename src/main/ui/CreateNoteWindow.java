@@ -79,10 +79,8 @@ public class CreateNoteWindow extends JDialog {
         createButton.addActionListener(event -> {
             String title = titleField.getText();
             String content = contentField.getText();
-            Note note = new Note(title);
-            note.setContent(content);
+            Note note = new Note(title, content);
             app.getNoteBook().addNote(note);
-
             app.getNotificationPanel().createNotification("Note \'" + title + "\' Created!");
             dispose();
             app.filterNotes();
