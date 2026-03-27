@@ -23,12 +23,14 @@ public class NoteWindow extends JDialog {
     private static final Color NOTE_COLOR = new Color(255, 235, 161);
     private static final int WIDTH = 400;
     private static final int HEIGHT = 400;
+    private boolean deleted;
 
     // Creates a new window with default settings connected to NoteApp, displaying
     // Note
     public NoteWindow(NoteApp app, Note note) {
         super(app, note.getTitle(), false);
         this.app = app;
+        this.deleted = false;
         setSize(WIDTH, HEIGHT);
         setLayout(null);
         getContentPane().setBackground(NOTE_COLOR);
@@ -59,7 +61,9 @@ public class NoteWindow extends JDialog {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                updateNote(note, title, content);
+                if (!deleted) {
+                    updateNote(note, title, content);
+                }
             }
         });
 
@@ -89,6 +93,7 @@ public class NoteWindow extends JDialog {
     public void deleteNote(Note note) {
         app.getNotificationPanel().createNotification("Note \'" + note.getTitle() + "\' Deleted!");
         app.getNoteBook().deleteNote(note);
+        deleted = true;
         dispose();
         app.filterNotes();
     }
