@@ -28,6 +28,7 @@ public class NoteApp extends JFrame implements WindowListener {
 
     private final String filePath = "data/noteBook.json";
     private NoteBook notebook;
+    private List<Note> visibleNotes;
     private ReadJson readjson;
     private WriteJson writejson;
 
@@ -107,11 +108,10 @@ public class NoteApp extends JFrame implements WindowListener {
     // EFFECTS: filters all notes in notebook, keeping notes that match the given
     // prefix, and displays them
     public void filterNotes() {
-        String prefix = buttonsPanel.getSearchBarValue();
-        List<Note> notes = notebook.filterNotes(prefix);
-        workspacePanel.displayNotes(notes);
+        visibleNotes = notebook.filterNotes();
+        workspacePanel.displayNotes(visibleNotes);
     }
-
+    
     // EFFECTS: saves the notebook to a JSON file
     public void saveNoteBook() {
         try {

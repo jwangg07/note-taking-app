@@ -68,19 +68,19 @@ public class ButtonsPanel extends JPanel implements ActionListener {
             @Override
             public void removeUpdate(DocumentEvent e) {
                 searchBarValue = searchBar.getText();
-                app.filterNotes();
+                app.getNoteBook().setFilter(searchBarValue);
             }
 
             @Override
             public void insertUpdate(DocumentEvent e) {
                 searchBarValue = searchBar.getText();
-                app.filterNotes();
+                app.getNoteBook().setFilter(searchBarValue);
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 searchBarValue = searchBar.getText();
-                app.filterNotes();
+                app.getNoteBook().setFilter(searchBarValue);
             }
         });
         add(searchBar);

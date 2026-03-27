@@ -10,10 +10,12 @@ import org.json.JSONObject;
 public class NoteBook {
 
     private ArrayList<Note> notesList;
+    private String filterPrefix;
 
     // EFFECTS: Creates an empty notebook with an empty list of notes
     public NoteBook() {
         notesList = new ArrayList<>();
+        filterPrefix = "";
     }
 
     // REQUIRES: note title is distinct
@@ -55,12 +57,20 @@ public class NoteBook {
         return null;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the prefix by which the notes are filtered and filters them
+    public void setFilter(String prefix) {
+        filterPrefix = prefix;
+        EventLog.getInstance().logEvent(new Event("Filtered Notes from Notebook"));
+        filterNotes();
+    }
+
     // EFFECTS: filters all notes in notebook, keeping notes that match the given
     // prefix
-    public List<Note> filterNotes(String prefix) {
+    public List<Note> filterNotes() {
         List<Note> filteredNotes = new ArrayList<>();
         for (Note note : notesList) {
-            if (note.getTitle().startsWith(prefix)) {
+            if (note.getTitle().startsWith(filterPrefix)) {
                 filteredNotes.add(note);
             }
         }
@@ -93,7 +103,7 @@ public class NoteBook {
         }
 
         json.put("notes", jsonArray);
-
+        EventLog.getInstance().logEvent(new Event("Saved Notebook to file"));
         return json;
     }
 }
