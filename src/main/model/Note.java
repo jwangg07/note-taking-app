@@ -23,6 +23,7 @@ public class Note {
     }
 
     public void setTitle(String title) {
+        EventLog.getInstance().logEvent(new Event("Updated Title for Note"));
         this.title = title;
     }
 
@@ -31,6 +32,7 @@ public class Note {
     }
 
     public void setContent(String content) {
+        EventLog.getInstance().logEvent(new Event("Updated Content for Note"));
         this.content = content;
     }
 }
