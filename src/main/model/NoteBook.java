@@ -55,14 +55,17 @@ public class NoteBook {
         return null;
     }
 
-    // public List<Note> filterNotes(String prefix) {
-    //     List<Note> filteredNotes = new ArrayList<>();
-    //     for (Note note : notesList) {
-    //         if (note.getTitle().startsWith(prefix)) {
-    //             filteredNotes.add(note);
-    //         }
-    //     }
-    // }
+    // EFFECTS: filters all notes in notebook, keeping notes that match the given
+    // prefix
+    public List<Note> filterNotes(String prefix) {
+        List<Note> filteredNotes = new ArrayList<>();
+        for (Note note : notesList) {
+            if (note.getTitle().startsWith(prefix)) {
+                filteredNotes.add(note);
+            }
+        }
+        return filteredNotes;
+    }
 
     public List<Note> getAllNotes() {
         return notesList;
@@ -70,6 +73,11 @@ public class NoteBook {
 
     public int getNumNotes() {
         return notesList.size();
+    }
+
+    public void loadNotes(ArrayList<Note> notesList) {
+        EventLog.getInstance().logEvent(new Event("Loaded Notebook from file"));
+        this.notesList = notesList;
     }
 
     // EFFECTS: Converts notebook into a JSONObject

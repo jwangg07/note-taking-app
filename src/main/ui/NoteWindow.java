@@ -78,7 +78,7 @@ public class NoteWindow extends JDialog {
     public void updateNote(Note note, JTextArea title, JTextArea content) {
         note.setTitle(title.getText());
         note.setContent(content.getText());
-        app.getWorkspacePanel().displayNotes();
+        app.filterNotes();
         if (!app.compareNoteBookToFile()) {
             app.getNotificationPanel().createNotification("You have unsaved changes!");
         }
@@ -91,6 +91,5 @@ public class NoteWindow extends JDialog {
         app.getNoteBook().deleteNote(note);
         dispose();
         app.filterNotes();
-        app.getWorkspacePanel().displayNotes();
     }
 }

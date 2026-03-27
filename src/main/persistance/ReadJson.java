@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.json.JSONArray;
@@ -50,6 +52,7 @@ public class ReadJson {
     // EFFECTS: parses notes from JSON object and adds them to notebook
     private void addNotes(NoteBook notebook, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("notes");
+        ArrayList<Note> notesList = new ArrayList<>();
         for (Object json : jsonArray) {
             JSONObject nextJson = (JSONObject)json;
 
@@ -57,8 +60,9 @@ public class ReadJson {
             String content = nextJson.getString("content");
             
             Note note = new Note(title, content);
-            notebook.addNote(note);
+            notesList.add(note);
         }
+        notebook.loadNotes(notesList);
     }
 
 }

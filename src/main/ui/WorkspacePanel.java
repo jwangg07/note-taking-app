@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -38,9 +39,9 @@ public class WorkspacePanel extends JPanel {
 
     // EFFECTS: redraws each note in notebook as a box displaying the title and
     // content, the user may click on a specific note to view and edit the note
-    public void displayNotes() {
+    public void displayNotes(List<Note> notes) {
         removeAll();
-        for (Note note : app.getVisibleNoteBook().getAllNotes()) {
+        for (Note note : notes) {
             drawNote(note);
         }
         revalidate();

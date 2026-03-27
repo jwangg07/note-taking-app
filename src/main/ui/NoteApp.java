@@ -8,7 +8,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -28,7 +27,6 @@ import persistance.WriteJson;
 public class NoteApp extends JFrame implements WindowListener {
 
     private final String filePath = "data/noteBook.json";
-    private NoteBook visibleNotebook;
     private NoteBook notebook;
     private ReadJson readjson;
     private WriteJson writejson;
@@ -47,7 +45,6 @@ public class NoteApp extends JFrame implements WindowListener {
     public NoteApp() {
         super("Notebook");
         notebook = new NoteBook();
-        visibleNotebook = new NoteBook();
         readjson = new ReadJson(filePath);
         writejson = new WriteJson(filePath);
 
@@ -107,18 +104,12 @@ public class NoteApp extends JFrame implements WindowListener {
         return false;
     }
 
-    // MODIFIES: this
     // EFFECTS: filters all notes in notebook, keeping notes that match the given
     // prefix, and displays them
     public void filterNotes() {
         String prefix = buttonsPanel.getSearchBarValue();
-        visibleNotebook = new NoteBook();
-        for (Note note : notebook.getAllNotes()) {
-            if (note.getTitle().startsWith(prefix)) {
-                visibleNotebook.addNote(note);
-            }
-        }
-        workspacePanel.displayNotes();
+        List<Note> notes = notebook.filterNotes(prefix);
+        workspacePanel.displayNotes(notes);
     }
 
     // EFFECTS: saves the notebook to a JSON file
@@ -136,16 +127,11 @@ public class NoteApp extends JFrame implements WindowListener {
     public void loadNoteBook() {
         try {
             notebook = readjson.read();
-            visibleNotebook = notebook;
             notificationPanel.createNotification("Loaded notebook from " + filePath);
-            workspacePanel.displayNotes();
+            filterNotes();
         } catch (IOException e) {
             System.out.println("Unable to read file " + filePath);
         }
-    }
-
-    public NoteBook getVisibleNoteBook() {
-        return visibleNotebook;
     }
 
     public NoteBook getNoteBook() {
@@ -175,8 +161,7 @@ public class NoteApp extends JFrame implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        for (Iterator<Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
-            Event event = it.next();
+        for (Event event : EventLog.getInstance()) {
             System.out.println(event.toString());
         }
     }
