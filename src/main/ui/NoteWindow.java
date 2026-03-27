@@ -78,10 +78,18 @@ public class NoteWindow extends JDialog {
     }
 
     // MODIFIES: note
-    // EFFECTS: updates note title and content with text from JTextAreas
+    // EFFECTS: updates note title and content with text from JTextAreas if they are different
     public void updateNote(Note note, JTextArea title, JTextArea content) {
-        note.setTitle(title.getText());
-        note.setContent(content.getText());
+        String oldTitle = note.getTitle();
+        String oldContent = note.getContent();
+        String newTitle = title.getText();
+        String newContent = content.getText();
+        if (!oldTitle.equals(newTitle)) {
+            note.setTitle(title.getText());
+        }
+        if (!oldContent.equals(newContent)) {
+            note.setContent(content.getText());
+        }
         app.filterNotes();
         if (!app.compareNoteBookToFile()) {
             app.getNotificationPanel().createNotification("You have unsaved changes!");
