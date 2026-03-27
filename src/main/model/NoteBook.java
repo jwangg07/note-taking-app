@@ -62,7 +62,6 @@ public class NoteBook {
     public void setFilter(String prefix) {
         filterPrefix = prefix;
         EventLog.getInstance().logEvent(new Event("Updated Search to: " + prefix));
-        filterNotes();
     }
 
     // EFFECTS: filters all notes in notebook, keeping notes that match the given

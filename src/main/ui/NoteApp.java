@@ -105,13 +105,14 @@ public class NoteApp extends JFrame implements WindowListener {
         return false;
     }
 
+    // MODIFIES: this
     // EFFECTS: filters all notes in notebook, keeping notes that match the given
     // prefix, and displays them
     public void filterNotes() {
         visibleNotes = notebook.filterNotes();
         workspacePanel.displayNotes(visibleNotes);
     }
-    
+
     // EFFECTS: saves the notebook to a JSON file
     public void saveNoteBook() {
         try {
