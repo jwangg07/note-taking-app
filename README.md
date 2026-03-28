@@ -57,3 +57,10 @@ Thu Mar 26 22:18:59 PDT 2026
 Displaying 2 Note(s)
 Thu Mar 26 22:19:04 PDT 2026
 Saved Notebook to file
+
+# Phase 4: Task 3
+The primary design problem that can be seen from the UML diagram is the high level of coupling and rather low level of cohesion. 
+<br>
+For starters, the NoteApp class essentially holds together every other class in the program, and adding a new Panel or a new feature would definitely require a modification in numerous parts of the program. Something that I noticed within the JPanel and JDialog classes were a number of similar methods. It might be a good idea to create another layer of separation between NoteApp and the rest of the UI classes: NoteApp has a collection of JPanel and JDialog abstract classes, which are extended by NotificationPanel, NoteWindow, etc.. This would make it easier to create and add new UI components to the program without having to change the code in a number of spots. As well, it would remove the association from all the UI components to the Helper class, as we can move the common methods into the abstract classes. 
+<br>
+Some other smaller design choices I would change are removing the association between the NoteWindow class and Note class. It is likely possible to communicate a Note object into an instance of NoteWindow through NoteApp, allowing us to slightly loosen coupling. As well, the Main class serves little to no purpose other than to create an instance of NoteApp. We can simply move the main method into the NoteApp class. 
